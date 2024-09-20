@@ -1,0 +1,2 @@
+The "META" file is un-tested.
+The "find_install" target from "src/Makefile" is also un-tested.
