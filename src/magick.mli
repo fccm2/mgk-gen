@@ -1,6 +1,6 @@
 (** A Magick-Interface *)
 (* Interface-file for a magick-core lib.
- * authors: Monnier Florent (2024)
+ * Authors: Monnier Florent (2024)
  * To the extent permitted by law, you can use, modify, and redistribute
  * this file.
  *)
@@ -109,9 +109,28 @@ end
 
 val magick_image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
 
+(* draw-info *)
+
+type draw_info
+
+val magick_draw_info_acquire: unit -> draw_info
+val magick_draw_info_destroy: draw_info -> unit
+
+type color = int * int * int * int
+
+val magick_draw_info_set_fill: draw_info -> color -> unit
+val magick_draw_info_set_stroke: draw_info -> color -> unit
+
+val magick_draw_info_set_stroke_width: draw_info -> float -> unit
+val magick_draw_info_set_primitive: draw_info -> string -> unit
+
+val magick_image_draw: image -> draw_info -> unit
+
+
 (* high-level *)
 
 module Magick : sig
+  (** higher-level module *)
   val image_read : string -> image
   val image_display : image -> unit
   val image_write : image -> filename:string -> unit

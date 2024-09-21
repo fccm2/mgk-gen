@@ -149,8 +149,28 @@ end
 external magick_image_composite:
   image -> CompositeOp.t -> image -> int -> int -> unit = "caml_magick_image_composite"
 
+(* draw-info *)
+
+type draw_info
+
+external magick_draw_info_acquire: unit -> draw_info = "caml_magick_draw_info_acquire"
+external magick_draw_info_destroy: draw_info -> unit = "caml_magick_draw_info_destroy"
+
+type color = int * int * int * int
+
+external magick_draw_info_set_fill: draw_info -> color -> unit = "caml_magick_draw_info_set_fill"
+external magick_draw_info_set_stroke: draw_info -> color -> unit = "caml_magick_draw_info_set_stroke"
+
+external magick_draw_info_set_stroke_width: draw_info -> float -> unit = "caml_magick_draw_info_set_stroke_width"
+external magick_draw_info_set_primitive: draw_info -> string -> unit = "caml_magick_draw_info_set_primitive"
+
+external magick_image_draw: image -> draw_info -> unit = "caml_magick_image_draw"
+
+
 end (* Low_level *)
 
+
+(* Higher_level *)
 
 module Magick = struct
 

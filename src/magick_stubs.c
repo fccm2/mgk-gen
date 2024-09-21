@@ -1,5 +1,5 @@
-/* Stub-file for magick-core libs
- * authors: Monnier Florent (2024)
+/* Stub-file for the magick-core library
+ * Authors: Monnier Florent (2024)
  * To the extent permitted by law, you can use, modify, and redistribute
  * this file.
  */
@@ -31,6 +31,7 @@
 #include <caml/custom.h>
 
 #include <string.h>
+
 
 /* (ExceptionInfo *) */
 
@@ -71,6 +72,20 @@ static value Val_img(Image *image)
   *((Image **) Data_abstract_val(v))
 
 
+/* (DrawInfo *) */
+
+static value Val_drawinfo(DrawInfo *draw_info)
+{
+  value v = caml_alloc(1, Abstract_tag);
+  *((DrawInfo **) Data_abstract_val(v)) = draw_info;
+  return v;
+}
+
+#define Drawinfo_val(v) \
+  *((DrawInfo **) Data_abstract_val(v))
+
+
+
 /* MagickBooleanType */
 
 #define Val_MagickBoolean(b) \
@@ -78,6 +93,7 @@ static value Val_img(Image *image)
 
 #define MagickBoolean_val(b) \
   (b == Val_true ? MagickTrue : MagickFalse)
+
 
 
 /* MagickCoreGenesis() */
@@ -791,6 +807,147 @@ caml_magick_image_composite(
 
   if (status == MagickFalse) {
     caml_failwith("Error Compositing images");
+  }
+
+  CAMLreturn(Val_unit);
+}
+
+/* AcquireDrawInfo() */
+
+CAMLprim value
+caml_magick_draw_info_acquire(
+    value caml_unit)
+{
+  CAMLparam1(caml_unit);
+  CAMLlocal1(caml_draw_info);
+
+  DrawInfo *draw_info = AcquireDrawInfo();
+
+  caml_draw_info = Val_drawinfo(draw_info);
+
+  CAMLreturn(caml_draw_info);
+}
+
+CAMLprim value
+caml_magick_draw_info_destroy(
+    value caml_draw_info)
+{
+  CAMLparam1(caml_draw_info);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  DrawInfo *destroyed = DestroyDrawInfo(draw_info);
+
+  Drawinfo_val(caml_draw_info) = destroyed;
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_fill(
+    value caml_draw_info,
+    value caml_color)
+{
+  CAMLparam2(caml_draw_info, caml_color);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->fill.red     = Long_val(Field(caml_color, 0));
+  draw_info->fill.green   = Long_val(Field(caml_color, 1));
+  draw_info->fill.blue    = Long_val(Field(caml_color, 2));
+  draw_info->fill.opacity = Long_val(Field(caml_color, 3));
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_stroke(
+    value caml_draw_info,
+    value caml_color)
+{
+  CAMLparam2(caml_draw_info, caml_color);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->stroke.red     = Long_val(Field(caml_color, 0));
+  draw_info->stroke.green   = Long_val(Field(caml_color, 1));
+  draw_info->stroke.blue    = Long_val(Field(caml_color, 2));
+  draw_info->stroke.opacity = Long_val(Field(caml_color, 3));
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_stroke_width(
+    value caml_draw_info,
+    value caml_stroke_width)
+{
+  CAMLparam2(caml_draw_info, caml_stroke_width);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->stroke_width = Double_val(caml_stroke_width);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_primitive(
+    value caml_draw_info,
+    value caml_primitive)
+{
+  CAMLparam2(caml_draw_info, caml_primitive);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->primitive = AcquireString(String_val(caml_primitive));
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_image_draw(
+    value caml_image,
+    value caml_draw_info)
+{
+  CAMLparam2(caml_image, caml_draw_info);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  Image *image = Img_val(caml_image);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  MagickBooleanType status = DrawImage(image, draw_info);
+
+  if (status == MagickFalse) {
+    caml_failwith("Error Drawing image");
   }
 
   CAMLreturn(Val_unit);
