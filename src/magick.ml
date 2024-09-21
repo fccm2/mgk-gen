@@ -165,6 +165,15 @@ external magick_draw_info_set_primitive: draw_info -> string -> unit = "caml_mag
 
 external magick_image_draw: image -> draw_info -> unit = "caml_magick_image_draw"
 
+(* quantum *)
+
+external magick_get_quantum_depth: unit -> int = "caml_magick_get_quantum_depth"
+external magick_get_quantum_range: unit -> float = "caml_magick_get_quantum_range"
+external magick_get_quantum_scale: unit -> float = "caml_magick_get_quantum_scale"
+
+external magick_get_max_map: unit -> int = "caml_magick_get_max_map"
+external magick_get_max_colormap_size: unit -> int = "caml_magick_get_max_colormap_size"
+
 
 end (* Low_level *)
 

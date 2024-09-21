@@ -950,3 +950,52 @@ caml_magick_image_draw(
   CAMLreturn(Val_unit);
 }
 
+/* (QuantumRange) */
+
+CAMLprim value
+caml_magick_get_quantum_range(
+    value caml_unit)
+{
+  CAMLparam1(caml_unit);
+  CAMLlocal1(caml_quantum_range);
+
+  caml_quantum_range = caml_copy_double(QuantumRange);
+
+  CAMLreturn(caml_quantum_range);
+}
+
+/* (QuantumScale) */
+
+CAMLprim value
+caml_magick_get_quantum_scale(
+    value caml_unit)
+{
+  CAMLparam1(caml_unit);
+  CAMLlocal1(caml_quantum_scale);
+
+  caml_quantum_scale = caml_copy_double(QuantumScale);
+
+  CAMLreturn(caml_quantum_scale);
+}
+
+/* (MaxMap) */
+
+CAMLprim value
+caml_magick_get_max_map(value unit) {
+  return Val_long(MaxMap);
+}
+
+/* (MaxColormapSize) */
+
+CAMLprim value
+caml_magick_get_max_colormap_size(value unit) {
+  return Val_long(MaxColormapSize);
+}
+
+/* (MAGICKCORE_QUANTUM_DEPTH) */
+
+CAMLprim value
+caml_magick_get_quantum_depth(value unit) {
+  return Val_long(MAGICKCORE_QUANTUM_DEPTH);
+}
+

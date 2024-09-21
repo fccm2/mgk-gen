@@ -126,6 +126,15 @@ val magick_draw_info_set_primitive: draw_info -> string -> unit
 
 val magick_image_draw: image -> draw_info -> unit
 
+(* quantum *)
+
+val magick_get_quantum_depth: unit -> int
+val magick_get_quantum_range: unit -> float
+val magick_get_quantum_scale: unit -> float
+
+val magick_get_max_map: unit -> int
+val magick_get_max_colormap_size: unit -> int
+
 
 (* high-level *)
 
