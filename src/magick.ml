@@ -59,7 +59,6 @@ let magick_image_info_clone () =
 let magick_image_info_clone_some img_info =
   let img_info2 = _magick_image_info_clone_some img_info in
   Gc.finalise magick_image_info_destroy img_info2;
-  (* size and filename fields ? *)
   (img_info2)
 ;;
 

@@ -230,8 +230,6 @@ caml_magick_image_info_destroy(value caml_imginfo)
     caml_failwith("ImageInfo is NULL");
   }
 
-  image_info->size = (char *)NULL;
-
   Imginfo_val(caml_imginfo) = DestroyImageInfo(image_info);
 
   CAMLreturn(Val_unit);
@@ -323,13 +321,12 @@ caml_magick_image_info_set_size(
   CAMLparam2(caml_imginfo, caml_size);
 
   ImageInfo *image_info = Imginfo_val(caml_imginfo);
-  size_t size;
 
   if (image_info == (ImageInfo *)NULL) {
     caml_failwith("ImageInfo is NULL");
   }
 
-  image_info->size = (char *)String_val(caml_size);
+  image_info->size = AcquireString(String_val(caml_size));
 
   Store_field(caml_imginfo, 1, caml_size);
 
