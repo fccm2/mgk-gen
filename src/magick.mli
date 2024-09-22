@@ -57,6 +57,12 @@ val magick_image_set_filename : image -> string -> unit
 val magick_image_read : image_info -> exception_info -> image
 val magick_image_write : image_info -> image -> unit
 
+(* create *)
+
+type color = int * int * int * int
+
+val magick_image_new : image_info -> int -> int -> color -> image
+
 (* display *)
 
 val magick_image_display : image_info -> image -> unit
@@ -116,8 +122,6 @@ type draw_info
 val magick_draw_info_acquire: unit -> draw_info
 val magick_draw_info_destroy: draw_info -> unit
 
-type color = int * int * int * int
-
 val magick_draw_info_set_fill: draw_info -> color -> unit
 val magick_draw_info_set_stroke: draw_info -> color -> unit
 
@@ -141,6 +145,7 @@ val magick_get_max_colormap_size: unit -> int
 module Magick : sig
   (** higher-level module *)
   val image_read : string -> image
+  val new_image : int -> int -> color -> image
   val image_display : image -> unit
   val image_write : image -> filename:string -> unit
   val image_charcoal : image -> radius:float -> sigma:float -> image
@@ -156,5 +161,32 @@ module Magick : sig
   val image_brightness : image -> int -> unit
   val image_saturation : image -> int -> unit
   val image_hue : image -> int -> unit
+
+  module Color: sig
+    type t = color
+    (** (r, g, b, a) *)
+
+    val map8 : t -> t
+    (** maps entry colors with Q8 values,
+        for use with the current compiled quatum *)
+  end
+
+  module Prim: sig
+    type t
+    val draw_point: int * int -> t
+    val draw_line: int * int -> int * int -> t
+    val draw_rectangle: int * int -> int * int -> t
+    val draw_circle: int * int -> int -> t
+    val draw_ellipse: int * int -> int * int -> t
+    val draw_qbcurve: int * int -> int * int -> int * int -> t
+    val draw_cbcurve: int * int -> int * int -> int * int -> int * int -> t
+    val draw_polygon: (int * int) list -> t
+  end
+
+  val fill_primitive: image -> prim:Prim.t -> ?fill:Color.t -> unit -> unit
+
+  val stroke_primitive: image -> prim:Prim.t ->
+    ?stroke:Color.t ->
+    ?stroke_width:float -> unit -> unit
 end
 

@@ -1,5 +1,5 @@
 (* Interface-file for a magick-core lib.
- * authors: Monnier Florent (2024)
+ * Authors: Monnier Florent (2024)
  * To the extent permitted by law, you can use, modify, and redistribute
  * this file.
  *)
@@ -91,6 +91,13 @@ external magick_image_read : image_info -> exception_info -> image
 external magick_image_write : image_info -> image -> unit
   = "caml_magick_image_write"
 
+(* create *)
+
+type color = int * int * int * int
+
+external magick_image_new : image_info -> int -> int -> color -> image
+  = "caml_magick_image_create"
+
 (* display *)
 
 external magick_image_display : image_info -> image -> unit
@@ -155,8 +162,6 @@ type draw_info
 external magick_draw_info_acquire: unit -> draw_info = "caml_magick_draw_info_acquire"
 external magick_draw_info_destroy: draw_info -> unit = "caml_magick_draw_info_destroy"
 
-type color = int * int * int * int
-
 external magick_draw_info_set_fill: draw_info -> color -> unit = "caml_magick_draw_info_set_fill"
 external magick_draw_info_set_stroke: draw_info -> color -> unit = "caml_magick_draw_info_set_stroke"
 
@@ -190,6 +195,13 @@ module Magick = struct
     Magick.magick_image_info_set_filename nf filename;
     let img = Magick.magick_image_read nf e in
     Magick._magick_exception_info_destroy e;
+    Magick._magick_image_info_destroy nf;
+    Gc.finalise Magick.magick_image_destroy img;
+    (img)
+
+  let new_image w h color =
+    let nf = Magick._magick_image_info_clone () in
+    let img = Magick.magick_image_new nf w h color in
     Magick._magick_image_info_destroy nf;
     Gc.finalise Magick.magick_image_destroy img;
     (img)
@@ -275,6 +287,75 @@ module Magick = struct
 
   let image_composite img1 comp_op img2 x y =
     Magick.magick_image_composite img1 comp_op img2 x y
+
+  (* draw *)
+
+  module Color = struct
+    type t = int * int * int * int
+
+    let map8 (r, g, b, a) =
+      let m =
+        match Magick.magick_get_quantum_depth () with
+        | 8  -> 1
+        | 16 -> 257
+        | 32 -> 16843009
+        | 64 -> failwith "quantum-depth not handled yet"
+        | _ -> invalid_arg "unknown quantum_depth"
+      in
+      (r * m, g * m, b * m, a * m)
+  end
+
+  module Prim = struct
+    type t = string
+
+    let draw_line (x1, y1) (x2, y2) =
+      (Printf.sprintf "line %d,%d %d,%d" x1 y1 x2 y2)
+
+    let draw_point (x, y) =
+      (Printf.sprintf "point %d,%d" x y)
+
+    let draw_rectangle (x, y) (w, h) =
+      (Printf.sprintf "rectangle %d,%d %d,%d" x y (x + w) (y + h))
+
+    let draw_circle (cx, cy) (r) =
+      (Printf.sprintf "circle %d,%d %d,%d" cx cy cx (cy + r))
+
+    let draw_ellipse (cx, cy) (rx, ry) =
+      (Printf.sprintf "ellipse %d,%d %d,%d 0,360" cx cy rx ry)
+
+    let draw_qbcurve (x1, y1) (x2, y2) (x3, y3) =
+      (Printf.sprintf "path 'M %d,%d Q %d,%d %d,%d'" x1 y1 x2 y2 x3 y3)
+
+    let draw_cbcurve (x1, y1) (x2, y2) (x3, y3) (x4, y4) =
+      (Printf.sprintf "path 'M %d,%d C %d,%d %d,%d %d,%d'" x1 y1 x2 y2 x3 y3 x4 y4)
+
+    let draw_polygon ps =
+      let ps = List.map (fun (x, y) -> Printf.sprintf "%d,%d" x y) ps in
+      (Printf.sprintf "polygon %s" (String.concat " " ps))
+  end
+
+  let fill_primitive img ~prim:p ?fill () =
+    let d = Magick.magick_draw_info_acquire () in
+    begin match fill with None -> ()
+    | Some c -> Magick.magick_draw_info_set_fill d c
+    end;
+    Magick.magick_draw_info_set_primitive d p;
+    Magick.magick_image_draw img d;
+    Magick.magick_draw_info_destroy d;
+    ()
+
+  let stroke_primitive img ~prim:p ?stroke ?stroke_width () =
+    let d = Magick.magick_draw_info_acquire () in
+    begin match stroke_width with None -> ()
+    | Some v -> Magick.magick_draw_info_set_stroke_width d v
+    end;
+    begin match stroke with None -> ()
+    | Some c -> Magick.magick_draw_info_set_stroke d c
+    end;
+    Magick.magick_draw_info_set_primitive d p;
+    Magick.magick_image_draw img d;
+    Magick.magick_draw_info_destroy d;
+    ()
 
 end
 

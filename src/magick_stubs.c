@@ -372,6 +372,47 @@ caml_magick_image_read(
   CAMLreturn(caml_image);
 }
 
+/* NewMagickImage() */
+
+CAMLprim value
+caml_magick_image_create(
+    value caml_imginfo,
+    value caml_width,
+    value caml_height,
+    value caml_color)
+{
+  CAMLparam4(caml_imginfo, caml_width, caml_height, caml_color);
+  CAMLlocal1(caml_image);
+
+  ImageInfo *image_info = Imginfo_val(caml_imginfo);
+
+  Image *image;
+
+  if (image_info == (ImageInfo *)NULL) {
+    caml_failwith("ImageInfo is NULL");
+  }
+
+  MagickPixelPacket pixel_packet;
+
+  pixel_packet.red     = Long_val(Field(caml_color, 0));
+  pixel_packet.green   = Long_val(Field(caml_color, 1));
+  pixel_packet.blue    = Long_val(Field(caml_color, 2));
+  pixel_packet.opacity = Long_val(Field(caml_color, 3));
+
+  image =
+    NewMagickImage(image_info,
+        Long_val(caml_width),
+        Long_val(caml_height), &pixel_packet);
+
+  caml_image = Val_img(image);
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  CAMLreturn(caml_image);
+}
+
 /* WriteImage() */
 
 CAMLprim value
