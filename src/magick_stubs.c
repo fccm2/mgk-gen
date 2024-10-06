@@ -275,10 +275,8 @@ caml_magick_image_set_filename(
     caml_failwith("image->set_filename: filename too long");
   }
 
-  strncpy(
-    image->filename,
-    String_val(caml_filename),
-    len + 1);
+  strncpy(image->filename,
+    String_val(caml_filename), len + 1);
 
   CAMLreturn(Val_unit);
 }
