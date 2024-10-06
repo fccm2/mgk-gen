@@ -50,7 +50,7 @@ static value Val_exninfo(ExceptionInfo *exception)
 
 static value Val_imginfo(ImageInfo *image_info)
 {
-  value v = caml_alloc(2, Abstract_tag);
+  value v = caml_alloc(1, Abstract_tag);
   *((ImageInfo **) Data_abstract_val(v)) = image_info;
   return v;
 }
@@ -325,8 +325,6 @@ caml_magick_image_info_set_size(
   }
 
   image_info->size = AcquireString(String_val(caml_size));
-
-  Store_field(caml_imginfo, 1, caml_size);
 
   CAMLreturn(Val_unit);
 }
