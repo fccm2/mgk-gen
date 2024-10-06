@@ -363,11 +363,11 @@ caml_magick_image_read(
     caml_failwith("Error reading image");
   }
 
-  caml_image = Val_img(image);
-
   if (image == (Image *)NULL) {
     caml_failwith("Image is NULL");
   }
+
+  caml_image = Val_img(image);
 
   CAMLreturn(caml_image);
 }
@@ -404,11 +404,11 @@ caml_magick_image_create(
         Long_val(caml_width),
         Long_val(caml_height), &pixel_packet);
 
-  caml_image = Val_img(image);
-
   if (image == (Image *)NULL) {
     caml_failwith("Image is NULL");
   }
+
+  caml_image = Val_img(image);
 
   CAMLreturn(caml_image);
 }
