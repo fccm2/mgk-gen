@@ -332,6 +332,9 @@ module Magick = struct
     let draw_polygon ps =
       let ps = List.map (fun (x, y) -> Printf.sprintf "%d,%d" x y) ps in
       (Printf.sprintf "polygon %s" (String.concat " " ps))
+
+    let draw_arc (cx, cy) (rx, ry) (a1, a2) =
+      (Printf.sprintf "ellipse %d,%d %d,%d %d,%d" cx cy rx ry a1 a2)
   end
 
   let fill_primitive img ~prim:p ?fill () =
