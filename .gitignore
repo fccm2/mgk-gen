@@ -3,5 +3,8 @@
 *.cmi
 *.cmo
 *.cma
+*.cmx
+*.cmxa
+*.opt
 *.so
 _*
