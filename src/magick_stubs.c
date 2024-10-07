@@ -827,6 +827,35 @@ caml_magick_image_modulate(
   CAMLreturn(Val_unit);
 }
 
+/* EdgeImage() */
+
+CAMLprim value
+caml_magick_image_edge(
+    value caml_image, value radius, value caml_exninfo)
+{
+  CAMLparam3(caml_image, radius, caml_exninfo);
+  CAMLlocal1(caml_image_2);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+  Image *image = Img_val(caml_image);
+  Image *image_2;
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  image_2 = EdgeImage(image, Double_val(radius), exception);
+
+  if (image_2 == (Image *)NULL)
+  {
+    caml_failwith("Error edge image");
+  }
+
+  caml_image_2 = Val_img(image_2);
+
+  CAMLreturn(caml_image_2);
+}
+
 /* DisplayImages() */
 
 CAMLprim value

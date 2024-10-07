@@ -269,6 +269,9 @@ external magick_image_shade : image -> gray:bool -> azimuth:float -> elevation:f
 external magick_image_emboss : image -> radius:float -> sigma:float -> exception_info -> image
   = "caml_magick_image_emboss"
 
+external magick_image_edge : image -> radius:float -> exception_info -> image
+  = "caml_magick_image_edge"
+
 (* visual-effects *)
 
 external magick_image_charcoal : image -> radius:float -> sigma:float -> exception_info -> image
@@ -406,6 +409,13 @@ module Magick = struct
   let image_emboss img ~radius ~sigma =
     let e = Magick._magick_exception_info_acquire () in
     let img2 = Magick.magick_image_emboss img ~radius ~sigma e in
+    Magick._magick_exception_info_destroy e;
+    Gc.finalise Magick.magick_image_destroy img2;
+    (img2)
+
+  let image_edge img ~radius =
+    let e = Magick._magick_exception_info_acquire () in
+    let img2 = Magick.magick_image_edge img ~radius e in
     Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)

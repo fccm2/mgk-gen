@@ -86,6 +86,9 @@ val magick_image_shade :
 val magick_image_emboss :
   image -> radius:float -> sigma:float -> exception_info -> image
 
+val magick_image_edge :
+  image -> radius:float -> exception_info -> image
+
 (* visual-effects *)
 
 val magick_image_charcoal :
@@ -172,6 +175,7 @@ module Magick : sig
   val image_spread : image -> radius:float -> image
   val image_sharpen : image -> radius:float -> sigma:float -> image
   val image_shade : image -> gray:bool -> azimuth:float -> elevation:float -> image
+  val image_edge : image -> radius:float -> image
   val image_emboss : image -> radius:float -> sigma:float -> image
   val image_colorspace_transform : image -> ColorSpace.t -> unit
   val image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
