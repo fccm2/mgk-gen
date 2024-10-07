@@ -856,6 +856,38 @@ caml_magick_image_edge(
   CAMLreturn(caml_image_2);
 }
 
+/* ScaleImage() */
+
+CAMLprim value
+caml_magick_image_scale(
+    value caml_image, value size, value caml_exninfo)
+{
+  CAMLparam3(caml_image, size, caml_exninfo);
+  CAMLlocal1(caml_image_2);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+  Image *image = Img_val(caml_image);
+  Image *image_2;
+
+  size_t columns = Long_val(Field(size, 0));
+  size_t rows    = Long_val(Field(size, 1));
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  image_2 = ScaleImage(image, columns, rows, exception);
+
+  if (image_2 == (Image *)NULL)
+  {
+    caml_failwith("Error scale image");
+  }
+
+  caml_image_2 = Val_img(image_2);
+
+  CAMLreturn(caml_image_2);
+}
+
 /* DisplayImages() */
 
 CAMLprim value

@@ -99,6 +99,10 @@ val magick_image_charcoal :
 val magick_image_modulate : image -> modulate:string -> unit
 (** modulate:(brightness, saturation, hue), default is 100 *)
 
+(* resize *)
+
+val magick_image_scale : image -> int * int -> exception_info -> image
+
 (** {4 color-space} *)
 
 module ColorSpace : sig
@@ -181,6 +185,7 @@ module Magick : sig
   val image_edge : image -> radius:float -> image
   val image_emboss : image -> radius:float -> sigma:float -> image
   val image_colorspace_transform : image -> ColorSpace.t -> unit
+  val image_scale : image -> size:int * int -> image
   val image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
   val image_modulate : image -> modulate:(int * int * int) -> unit
   (* modulates: *)

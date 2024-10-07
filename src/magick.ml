@@ -282,6 +282,11 @@ external magick_image_charcoal : image -> radius:float -> sigma:float -> excepti
 external magick_image_modulate : image -> modulate:string -> unit
   = "caml_magick_image_modulate"
 
+(* resize *)
+
+external magick_image_scale : image -> int * int -> exception_info -> image
+  = "caml_magick_image_scale"
+
 (* color-space *)
 
 module ColorSpace = struct
@@ -419,6 +424,14 @@ module Magick = struct
   let image_edge img ~radius =
     let e = Magick._magick_exception_info_acquire () in
     let img2 = Magick.magick_image_edge img ~radius e in
+    Magick._magick_exception_info_destroy e;
+    Gc.finalise Magick.magick_image_destroy img2;
+    (img2)
+
+
+  let image_scale img ~size =
+    let e = Magick._magick_exception_info_acquire () in
+    let img2 = Magick.magick_image_scale img size e in
     Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
