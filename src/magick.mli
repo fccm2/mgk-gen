@@ -147,6 +147,9 @@ val magick_draw_info_set_primitive: draw_info -> string -> unit
   }
 *)
 
+val magick_draw_info_set_font: draw_info -> string -> unit
+val magick_draw_info_set_pointsize: draw_info -> float -> unit
+
 val magick_image_draw: image -> draw_info -> unit
 
 (** {4 quantum} *)

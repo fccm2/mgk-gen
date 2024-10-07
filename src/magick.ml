@@ -320,6 +320,9 @@ external magick_draw_info_set_stroke: draw_info -> color -> unit = "caml_magick_
 external magick_draw_info_set_stroke_width: draw_info -> float -> unit = "caml_magick_draw_info_set_stroke_width"
 external magick_draw_info_set_primitive: draw_info -> string -> unit = "caml_magick_draw_info_set_primitive"
 
+external magick_draw_info_set_font: draw_info -> string -> unit = "caml_magick_draw_info_set_font"
+external magick_draw_info_set_pointsize: draw_info -> float -> unit = "caml_magick_draw_info_set_pointsize"
+
 external magick_image_draw: image -> draw_info -> unit = "caml_magick_image_draw"
 
 (* quantum *)

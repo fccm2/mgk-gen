@@ -1119,6 +1119,42 @@ caml_magick_draw_info_set_primitive(
 }
 
 CAMLprim value
+caml_magick_draw_info_set_font(
+    value caml_draw_info,
+    value caml_font)
+{
+  CAMLparam2(caml_draw_info, caml_font);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->font = AcquireString(String_val(caml_font));
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_pointsize(
+    value caml_draw_info,
+    value caml_pointsize)
+{
+  CAMLparam2(caml_draw_info, caml_pointsize);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->pointsize = Double_val(caml_pointsize);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
 caml_magick_image_draw(
     value caml_image,
     value caml_draw_info)
