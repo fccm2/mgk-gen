@@ -1,0 +1,593 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Magick" rel="Chapter" href="Magick.html"><link title="genesis / terminus" rel="Section" href="#4_genesisterminus">
+<link title="exception-info" rel="Section" href="#4_exceptioninfo">
+<link title="image-info" rel="Section" href="#4_imageinfo">
+<link title="image" rel="Section" href="#4_image">
+<link title="read / write" rel="Section" href="#4_readwrite">
+<link title="create" rel="Section" href="#4_create">
+<link title="display" rel="Section" href="#4_display">
+<link title="effects" rel="Section" href="#4_effects">
+<link title="color-space" rel="Section" href="#4_colorspace">
+<link title="composite" rel="Section" href="#4_composite">
+<link title="draw-info" rel="Section" href="#4_drawinfo">
+<link title="quantum" rel="Section" href="#4_quantum">
+<link title="high-level" rel="Section" href="#4_highlevel">
+<link title="exception-info" rel="Section" href="#4_exceptioninfo">
+<title>Magick</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Magick.html">Magick</a></h1>
+
+<pre><span id="MODULEMagick"><span class="keyword">module</span> Magick</span>: <code class="code">sig</code> <a href="Magick.html">..</a> <code class="code">end</code></pre><div class="info module top">
+<div class="info-desc">
+<p>An Interface to the Magick-Core</p>
+</div>
+</div>
+<hr width="100%">
+<h5 id="4_genesisterminus">genesis / terminus</h5>
+<pre><span id="VALmagick_core_genesis"><span class="keyword">val</span> magick_core_genesis</span> : <code class="type">unit -> unit</code></pre>
+<pre><span id="VALmagick_core_terminus"><span class="keyword">val</span> magick_core_terminus</span> : <code class="type">unit -> unit</code></pre><h5 id="4_exceptioninfo">exception-info</h5>
+<pre><span id="TYPEexception_info"><span class="keyword">type</span> <code class="type"></code>exception_info</span> </pre>
+
+
+<pre><span id="VALmagick_exception_info_acquire"><span class="keyword">val</span> magick_exception_info_acquire</span> : <code class="type">unit -> <a href="Magick.html#TYPEexception_info">exception_info</a></code></pre>
+<pre><span id="VALmagick_exception_info_destroy"><span class="keyword">val</span> magick_exception_info_destroy</span> : <code class="type"><a href="Magick.html#TYPEexception_info">exception_info</a> -> unit</code></pre><h5 id="4_imageinfo">image-info</h5>
+<pre><span id="TYPEimage_info"><span class="keyword">type</span> <code class="type"></code>image_info</span> </pre>
+
+
+<pre><span id="VALmagick_image_info_clone"><span class="keyword">val</span> magick_image_info_clone</span> : <code class="type">unit -> <a href="Magick.html#TYPEimage_info">image_info</a></code></pre>
+<pre><span id="VALmagick_image_info_destroy"><span class="keyword">val</span> magick_image_info_destroy</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> unit</code></pre>
+<pre><span id="VALmagick_image_info_clone_some"><span class="keyword">val</span> magick_image_info_clone_some</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> <a href="Magick.html#TYPEimage_info">image_info</a></code></pre>
+<pre><span id="VALmagick_image_info_set_filename"><span class="keyword">val</span> magick_image_info_set_filename</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> string -> unit</code></pre>
+<pre><span id="VALmagick_image_info_set_size"><span class="keyword">val</span> magick_image_info_set_size</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> string -> unit</code></pre><h5 id="4_image">image</h5>
+<pre><span id="TYPEimage"><span class="keyword">type</span> <code class="type"></code>image</span> </pre>
+
+
+<pre><span id="VALmagick_image_destroy"><span class="keyword">val</span> magick_image_destroy</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> unit</code></pre>
+<pre><span id="VALmagick_image_set_filename"><span class="keyword">val</span> magick_image_set_filename</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> string -> unit</code></pre><h5 id="4_readwrite">read / write</h5>
+<pre><span id="VALmagick_image_read"><span class="keyword">val</span> magick_image_read</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_write"><span class="keyword">val</span> magick_image_write</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> <a href="Magick.html#TYPEimage">image</a> -> unit</code></pre><h5 id="4_create">create</h5>
+<pre><span id="TYPEcolor"><span class="keyword">type</span> <code class="type"></code>color</span> = <code class="type">int * int * int * int</code> </pre>
+
+
+<pre><span id="VALmagick_image_new"><span class="keyword">val</span> magick_image_new</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> int -> int -> <a href="Magick.html#TYPEcolor">color</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre><h5 id="4_display">display</h5>
+<pre><span id="VALmagick_image_display"><span class="keyword">val</span> magick_image_display</span> : <code class="type"><a href="Magick.html#TYPEimage_info">image_info</a> -> <a href="Magick.html#TYPEimage">image</a> -> unit</code></pre><h5 id="4_effects">effects</h5>
+<pre><span id="VALmagick_image_blur"><span class="keyword">val</span> magick_image_blur</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -><br>       radius:float -> sigma:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_spread"><span class="keyword">val</span> magick_image_spread</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> radius:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_sharpen"><span class="keyword">val</span> magick_image_sharpen</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -><br>       radius:float -> sigma:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_shade"><span class="keyword">val</span> magick_image_shade</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -><br>       gray:bool -><br>       azimuth:float -> elevation:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_emboss"><span class="keyword">val</span> magick_image_emboss</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -><br>       radius:float -> sigma:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_edge"><span class="keyword">val</span> magick_image_edge</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> radius:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_charcoal"><span class="keyword">val</span> magick_image_charcoal</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -><br>       radius:float -> sigma:float -> <a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEimage">image</a></code></pre>
+<pre><span id="VALmagick_image_modulate"><span class="keyword">val</span> magick_image_modulate</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> modulate:string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>modulate:(brightness, saturation, hue), default is 100</p>
+</div>
+</div>
+<h5 id="4_colorspace">color-space</h5>
+<pre><span id="MODULEColorSpace"><span class="keyword">module</span> <a href="Magick.ColorSpace.html">ColorSpace</a></span>: <code class="code">sig</code> <a href="Magick.ColorSpace.html">..</a> <code class="code">end</code></pre>
+<pre><span id="VALmagick_image_colorspace_transform"><span class="keyword">val</span> magick_image_colorspace_transform</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> <a href="Magick.ColorSpace.html#TYPEt">ColorSpace.t</a> -> unit</code></pre><h5 id="4_composite">composite</h5>
+<pre><span id="MODULECompositeOp"><span class="keyword">module</span> <a href="Magick.CompositeOp.html">CompositeOp</a></span>: <code class="code">sig</code> <a href="Magick.CompositeOp.html">..</a> <code class="code">end</code></pre>
+<pre><span id="VALmagick_image_composite"><span class="keyword">val</span> magick_image_composite</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> <a href="Magick.CompositeOp.html#TYPEt">CompositeOp.t</a> -> <a href="Magick.html#TYPEimage">image</a> -> int -> int -> unit</code></pre><h5 id="4_drawinfo">draw-info</h5>
+<pre><span id="TYPEdraw_info"><span class="keyword">type</span> <code class="type"></code>draw_info</span> </pre>
+
+
+<pre><span id="VALmagick_draw_info_acquire"><span class="keyword">val</span> magick_draw_info_acquire</span> : <code class="type">unit -> <a href="Magick.html#TYPEdraw_info">draw_info</a></code></pre>
+<pre><span id="VALmagick_draw_info_destroy"><span class="keyword">val</span> magick_draw_info_destroy</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> unit</code></pre>
+<pre><span id="VALmagick_draw_info_set_fill"><span class="keyword">val</span> magick_draw_info_set_fill</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> <a href="Magick.html#TYPEcolor">color</a> -> unit</code></pre>
+<pre><span id="VALmagick_draw_info_set_stroke"><span class="keyword">val</span> magick_draw_info_set_stroke</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> <a href="Magick.html#TYPEcolor">color</a> -> unit</code></pre>
+<pre><span id="VALmagick_draw_info_set_stroke_width"><span class="keyword">val</span> magick_draw_info_set_stroke_width</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> float -> unit</code></pre>
+<pre><span id="VALmagick_draw_info_set_primitive"><span class="keyword">val</span> magick_draw_info_set_primitive</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> string -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<ul>
+<li>line x1,y1 x2,y2 </li>
+<li>point x,y </li>
+<li>rectangle x1,y1 x2,y2 </li>
+<li>circle cx,cy x,y </li>
+<li>ellipse cx,cy rx,ry 0,360 </li>
+<li>path 'M x1,y1 Q x2,y2 x3,y3' </li>
+<li>path 'M x1,y1 C x2,y2 x3,y3 x4,y4' </li>
+<li>polygon [x,y]+ </li>
+</ul>
+</div>
+</div>
+
+<pre><span id="VALmagick_draw_info_set_font"><span class="keyword">val</span> magick_draw_info_set_font</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> string -> unit</code></pre>
+<pre><span id="VALmagick_draw_info_set_pointsize"><span class="keyword">val</span> magick_draw_info_set_pointsize</span> : <code class="type"><a href="Magick.html#TYPEdraw_info">draw_info</a> -> float -> unit</code></pre>
+<pre><span id="VALmagick_image_draw"><span class="keyword">val</span> magick_image_draw</span> : <code class="type"><a href="Magick.html#TYPEimage">image</a> -> <a href="Magick.html#TYPEdraw_info">draw_info</a> -> unit</code></pre><h5 id="4_quantum">quantum</h5>
+<pre><span id="VALmagick_get_quantum_depth"><span class="keyword">val</span> magick_get_quantum_depth</span> : <code class="type">unit -> int</code></pre>
+<pre><span id="VALmagick_get_quantum_range"><span class="keyword">val</span> magick_get_quantum_range</span> : <code class="type">unit -> float</code></pre>
+<pre><span id="VALmagick_get_quantum_scale"><span class="keyword">val</span> magick_get_quantum_scale</span> : <code class="type">unit -> float</code></pre>
+<pre><span id="VALmagick_get_max_map"><span class="keyword">val</span> magick_get_max_map</span> : <code class="type">unit -> int</code></pre>
+<pre><span id="VALmagick_get_max_colormap_size"><span class="keyword">val</span> magick_get_max_colormap_size</span> : <code class="type">unit -> int</code></pre><h5 id="4_highlevel">high-level</h5><p>higher-level interface</p>
+
+<pre><span id="MODULEMagick"><span class="keyword">module</span> <a href="Magick.Magick.html">Magick</a></span>: <code class="code">sig</code> <a href="Magick.Magick.html">..</a> <code class="code">end</code></pre><h5 id="4_exceptioninfo">exception-info</h5>
+<pre><code><span id="TYPEexception_type"><span class="keyword">type</span> <code class="type"></code>exception_type</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.UndefinedException"><span class="constructor">UndefinedException</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.WarningException"><span class="constructor">WarningException</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.TypeWarning"><span class="constructor">TypeWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.OptionWarning"><span class="constructor">OptionWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DelegateWarning"><span class="constructor">DelegateWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MissingDelegateWarning"><span class="constructor">MissingDelegateWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CorruptImageWarning"><span class="constructor">CorruptImageWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FileOpenWarning"><span class="constructor">FileOpenWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.BlobWarning"><span class="constructor">BlobWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.StreamWarning"><span class="constructor">StreamWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CacheWarning"><span class="constructor">CacheWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CoderWarning"><span class="constructor">CoderWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FilterWarning"><span class="constructor">FilterWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ModuleWarning"><span class="constructor">ModuleWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DrawWarning"><span class="constructor">DrawWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ImageWarning"><span class="constructor">ImageWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.WandWarning"><span class="constructor">WandWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RandomWarning"><span class="constructor">RandomWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.XServerWarning"><span class="constructor">XServerWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MonitorWarning"><span class="constructor">MonitorWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RegistryWarning"><span class="constructor">RegistryWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ConfigureWarning"><span class="constructor">ConfigureWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.PolicyWarning"><span class="constructor">PolicyWarning</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ErrorException"><span class="constructor">ErrorException</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.TypeError"><span class="constructor">TypeError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.OptionError"><span class="constructor">OptionError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DelegateError"><span class="constructor">DelegateError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MissingDelegateError"><span class="constructor">MissingDelegateError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CorruptImageError"><span class="constructor">CorruptImageError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FileOpenError"><span class="constructor">FileOpenError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.BlobError"><span class="constructor">BlobError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.StreamError"><span class="constructor">StreamError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CacheError"><span class="constructor">CacheError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CoderError"><span class="constructor">CoderError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FilterError"><span class="constructor">FilterError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ModuleError"><span class="constructor">ModuleError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DrawError"><span class="constructor">DrawError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ImageError"><span class="constructor">ImageError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.WandError"><span class="constructor">WandError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RandomError"><span class="constructor">RandomError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.XServerError"><span class="constructor">XServerError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MonitorError"><span class="constructor">MonitorError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RegistryError"><span class="constructor">RegistryError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ConfigureError"><span class="constructor">ConfigureError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.PolicyError"><span class="constructor">PolicyError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FatalErrorException"><span class="constructor">FatalErrorException</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.TypeFatalError"><span class="constructor">TypeFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.OptionFatalError"><span class="constructor">OptionFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DelegateFatalError"><span class="constructor">DelegateFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MissingDelegateFatalError"><span class="constructor">MissingDelegateFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CorruptImageFatalError"><span class="constructor">CorruptImageFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FileOpenFatalError"><span class="constructor">FileOpenFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.BlobFatalError"><span class="constructor">BlobFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.StreamFatalError"><span class="constructor">StreamFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CacheFatalError"><span class="constructor">CacheFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.CoderFatalError"><span class="constructor">CoderFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.FilterFatalError"><span class="constructor">FilterFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ModuleFatalError"><span class="constructor">ModuleFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.DrawFatalError"><span class="constructor">DrawFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ImageFatalError"><span class="constructor">ImageFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.WandFatalError"><span class="constructor">WandFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RandomFatalError"><span class="constructor">RandomFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.XServerFatalError"><span class="constructor">XServerFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.MonitorFatalError"><span class="constructor">MonitorFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.RegistryFatalError"><span class="constructor">RegistryFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.ConfigureFatalError"><span class="constructor">ConfigureFatalError</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTexception_type.PolicyFatalError"><span class="constructor">PolicyFatalError</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><span id="VALmagick_exception_info_reason"><span class="keyword">val</span> magick_exception_info_reason</span> : <code class="type"><a href="Magick.html#TYPEexception_info">exception_info</a> -> string</code></pre>
+<pre><span id="VALmagick_exception_info_description"><span class="keyword">val</span> magick_exception_info_description</span> : <code class="type"><a href="Magick.html#TYPEexception_info">exception_info</a> -> string</code></pre>
+<pre><span id="VALmagick_exception_info_severity"><span class="keyword">val</span> magick_exception_info_severity</span> : <code class="type"><a href="Magick.html#TYPEexception_info">exception_info</a> -> <a href="Magick.html#TYPEexception_type">exception_type</a></code></pre>
+<pre><span id="VALexception_severity_string"><span class="keyword">val</span> exception_severity_string</span> : <code class="type"><a href="Magick.html#TYPEexception_type">exception_type</a> -> string</code></pre></body></html>

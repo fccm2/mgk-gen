@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Magick.CompositeOp.html">
+<link rel="Up" href="Magick.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Magick" rel="Chapter" href="Magick.html"><title>Magick.Magick</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Magick.CompositeOp.html" title="Magick.CompositeOp">Previous</a>
+&nbsp;<a class="up" href="Magick.html" title="Magick">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Magick.Magick.html">Magick.Magick</a></h1>
+
+<pre><span id="MODULEMagick"><span class="keyword">module</span> Magick</span>: <code class="code">sig</code> <a href="Magick.Magick.html">..</a> <code class="code">end</code></pre><hr width="100%">
+<p>higher-level module</p>
+
+<pre><span id="VALimage_read"><span class="keyword">val</span> image_read</span> : <code class="type">string -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALnew_image"><span class="keyword">val</span> new_image</span> : <code class="type">int -> int -> <a href="Magick.html#TYPEcolor">Magick.color</a> -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_display"><span class="keyword">val</span> image_display</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> unit</code></pre>
+<pre><span id="VALimage_write"><span class="keyword">val</span> image_write</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> filename:string -> unit</code></pre>
+<pre><span id="VALimage_charcoal"><span class="keyword">val</span> image_charcoal</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> sigma:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_blur"><span class="keyword">val</span> image_blur</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> sigma:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_spread"><span class="keyword">val</span> image_spread</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_sharpen"><span class="keyword">val</span> image_sharpen</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> sigma:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_shade"><span class="keyword">val</span> image_shade</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> gray:bool -> azimuth:float -> elevation:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_edge"><span class="keyword">val</span> image_edge</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_emboss"><span class="keyword">val</span> image_emboss</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> radius:float -> sigma:float -> <a href="Magick.html#TYPEimage">Magick.image</a></code></pre>
+<pre><span id="VALimage_colorspace_transform"><span class="keyword">val</span> image_colorspace_transform</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> <a href="Magick.ColorSpace.html#TYPEt">Magick.ColorSpace.t</a> -> unit</code></pre>
+<pre><span id="VALimage_composite"><span class="keyword">val</span> image_composite</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> <a href="Magick.CompositeOp.html#TYPEt">Magick.CompositeOp.t</a> -> <a href="Magick.html#TYPEimage">Magick.image</a> -> int -> int -> unit</code></pre>
+<pre><span id="VALimage_modulate"><span class="keyword">val</span> image_modulate</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> modulate:int * int * int -> unit</code></pre>
+<pre><span id="VALimage_brightness"><span class="keyword">val</span> image_brightness</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> int -> unit</code></pre>
+<pre><span id="VALimage_saturation"><span class="keyword">val</span> image_saturation</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> int -> unit</code></pre>
+<pre><span id="VALimage_hue"><span class="keyword">val</span> image_hue</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -> int -> unit</code></pre>
+<pre><span id="MODULEColor"><span class="keyword">module</span> <a href="Magick.Magick.Color.html">Color</a></span>: <code class="code">sig</code> <a href="Magick.Magick.Color.html">..</a> <code class="code">end</code></pre>
+<pre><span id="MODULEPrim"><span class="keyword">module</span> <a href="Magick.Magick.Prim.html">Prim</a></span>: <code class="code">sig</code> <a href="Magick.Magick.Prim.html">..</a> <code class="code">end</code></pre>
+<pre><span id="VALfill_primitive"><span class="keyword">val</span> fill_primitive</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -><br>       prim:<a href="Magick.Magick.Prim.html#TYPEt">Prim.t</a> -> ?fill:<a href="Magick.Magick.Color.html#TYPEt">Color.t</a> -> unit -> unit</code></pre>
+<pre><span id="VALstroke_primitive"><span class="keyword">val</span> stroke_primitive</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -><br>       prim:<a href="Magick.Magick.Prim.html#TYPEt">Prim.t</a> -><br>       ?stroke:<a href="Magick.Magick.Color.html#TYPEt">Color.t</a> -> ?stroke_width:float -> unit -> unit</code></pre>
+<pre><span id="VALdraw_text"><span class="keyword">val</span> draw_text</span> : <code class="type"><a href="Magick.html#TYPEimage">Magick.image</a> -><br>       pos:int * int -><br>       s:string -><br>       ?font:string -><br>       ?pointsize:float -><br>       ?fill:<a href="Magick.Magick.Color.html#TYPEt">Color.t</a> -><br>       ?stroke:<a href="Magick.Magick.Color.html#TYPEt">Color.t</a> -> ?stroke_width:float -> unit -> unit</code></pre></body></html>
