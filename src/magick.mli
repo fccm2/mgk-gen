@@ -1,23 +1,23 @@
-(** A Magick-Interface *)
-(* Interface-file for a magick-core lib.
+(** An Interface to the Magick-Core *)
+(* Interface-file for the magick-core lib.
  * Authors: Monnier Florent (2024)
  * To the extent permitted by law, you can use, modify, and redistribute
  * this file.
  *)
 
-(* genesis / terminus *)
+(** {4 genesis / terminus} *)
 
 val magick_core_genesis : unit -> unit
 val magick_core_terminus : unit -> unit
 
-(* exception-info *)
+(** {4 exception-info} *)
 
 type exception_info
 
 val magick_exception_info_acquire : unit -> exception_info
 val magick_exception_info_destroy : exception_info -> unit
 
-(* image-info *)
+(** {4 image-info} *)
 
 type image_info
 
@@ -29,6 +29,7 @@ val magick_image_info_clone_some : image_info -> image_info
 val magick_image_info_set_filename : image_info -> string -> unit
 val magick_image_info_set_size : image_info -> string -> unit
 
+(**/**)
 external _magick_exception_info_acquire: unit -> exception_info = "caml_magick_exception_info_acquire"
 external _magick_exception_info_destroy: exception_info -> unit = "caml_magick_exception_info_destroy"
 
@@ -44,30 +45,31 @@ external _magick_image_info_is_null : image_info -> bool
 
 external _magick_core_genesis: string array -> unit = "caml_magick_core_genesis"
 external _magick_core_terminus: unit -> unit = "caml_magick_core_terminus"
+(**/**)
 
-(* image *)
+(** {4 image} *)
 
 type image
 
 val magick_image_destroy : image -> unit
 val magick_image_set_filename : image -> string -> unit
 
-(* read / write *)
+(** {4 read / write} *)
 
 val magick_image_read : image_info -> exception_info -> image
 val magick_image_write : image_info -> image -> unit
 
-(* create *)
+(** {4 create} *)
 
 type color = int * int * int * int
 
 val magick_image_new : image_info -> int -> int -> color -> image
 
-(* display *)
+(** {4 display} *)
 
 val magick_image_display : image_info -> image -> unit
 
-(* effects *)
+(** {4 effects} *)
 
 val magick_image_blur :
   image -> radius:float -> sigma:float -> exception_info -> image
@@ -92,15 +94,17 @@ val magick_image_charcoal :
 (* enhance *)
 
 val magick_image_modulate : image -> modulate:string -> unit
-(* modulate:(brightness, saturation, hue), default is 100 *)
+(** modulate:(brightness, saturation, hue), default is 100 *)
 
-(* color-space *)
+(** {4 color-space} *)
 
 module ColorSpace : sig
   type t = RGB | GRAY | CMYK | HSL | CMY | Luv | LCHab | LCHuv
 end
 
 val magick_image_colorspace_transform : image -> ColorSpace.t -> unit
+
+(** {4 composite} *)
 
 module CompositeOp : sig
   type t = ColorBurn | ColorDodge | Colorize | Darken | DstAtop | DstIn
@@ -115,7 +119,7 @@ end
 
 val magick_image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
 
-(* draw-info *)
+(** {4 draw-info} *)
 
 type draw_info
 
@@ -127,10 +131,22 @@ val magick_draw_info_set_stroke: draw_info -> color -> unit
 
 val magick_draw_info_set_stroke_width: draw_info -> float -> unit
 val magick_draw_info_set_primitive: draw_info -> string -> unit
+(**
+  {ul
+    {- line x1,y1 x2,y2 }
+    {- point x,y }
+    {- rectangle x1,y1 x2,y2 }
+    {- circle cx,cy x,y }
+    {- ellipse cx,cy rx,ry 0,360 }
+    {- path 'M x1,y1 Q x2,y2 x3,y3' }
+    {- path 'M x1,y1 C x2,y2 x3,y3 x4,y4' }
+    {- polygon \[x,y\]+ }
+  }
+*)
 
 val magick_image_draw: image -> draw_info -> unit
 
-(* quantum *)
+(** {4 quantum} *)
 
 val magick_get_quantum_depth: unit -> int
 val magick_get_quantum_range: unit -> float
@@ -140,10 +156,13 @@ val magick_get_max_map: unit -> int
 val magick_get_max_colormap_size: unit -> int
 
 
-(* high-level *)
+(** {4 high-level} *)
+
+(** higher-level interface *)
 
 module Magick : sig
   (** higher-level module *)
+
   val image_read : string -> image
   val new_image : int -> int -> color -> image
   val image_display : image -> unit
@@ -171,6 +190,8 @@ module Magick : sig
         for use with the current compiled quatum *)
   end
 
+  (* primitives *)
+
   module Prim: sig
     type t
     val draw_point: int * int -> t
@@ -183,14 +204,15 @@ module Magick : sig
     val draw_polygon: (int * int) list -> t
   end
 
-  val fill_primitive: image -> prim:Prim.t -> ?fill:Color.t -> unit -> unit
+  val fill_primitive: image -> prim:Prim.t ->
+    ?fill:Color.t -> unit -> unit
 
   val stroke_primitive: image -> prim:Prim.t ->
     ?stroke:Color.t ->
     ?stroke_width:float -> unit -> unit
 end
 
-(* exception-info *)
+(** {4 exception-info} *)
 
 type exception_type =
   | UndefinedException
