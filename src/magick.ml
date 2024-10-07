@@ -497,6 +497,9 @@ module Magick = struct
 
     let draw_arc (cx, cy) (rx, ry) (a1, a2) =
       (Printf.sprintf "ellipse %d,%d %d,%d %d,%d" cx cy rx ry a1 a2)
+
+    let draw_text (x, y) s =
+      (Printf.sprintf "text %d,%d '%s'" x y s)
   end
 
   let fill_primitive img ~prim:p ?fill () =
@@ -522,6 +525,27 @@ module Magick = struct
     Magick.magick_draw_info_destroy d;
     ()
 
+  let draw_text img ~pos ~s ?font ?pointsize ?fill ?stroke ?stroke_width () =
+    let d = Magick.magick_draw_info_acquire () in
+    begin match fill with None -> ()
+    | Some c -> Magick.magick_draw_info_set_fill d c
+    end;
+    begin match stroke with None -> ()
+    | Some c -> Magick.magick_draw_info_set_stroke d c
+    end;
+    begin match stroke_width with None -> ()
+    | Some v -> Magick.magick_draw_info_set_stroke_width d v
+    end;
+    begin match font with None -> ()
+    | Some f -> Magick.magick_draw_info_set_font d f
+    end;
+    begin match pointsize with None -> ()
+    | Some p -> Magick.magick_draw_info_set_pointsize d p
+    end;
+    Magick.magick_draw_info_set_primitive d (Prim.draw_text pos s);
+    Magick.magick_image_draw img d;
+    Magick.magick_draw_info_destroy d;
+    ()
 end
 
 include Low_level

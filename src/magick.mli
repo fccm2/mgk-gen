@@ -209,12 +209,19 @@ module Magick : sig
     val draw_qbcurve: int * int -> int * int -> int * int -> t
     val draw_cbcurve: int * int -> int * int -> int * int -> int * int -> t
     val draw_polygon: (int * int) list -> t
+    val draw_text: int * int -> string -> string
   end
 
   val fill_primitive: image -> prim:Prim.t ->
     ?fill:Color.t -> unit -> unit
 
   val stroke_primitive: image -> prim:Prim.t ->
+    ?stroke:Color.t ->
+    ?stroke_width:float -> unit -> unit
+
+  val draw_text: image -> pos:int * int -> s:string ->
+    ?font:string -> ?pointsize:float ->
+    ?fill:Color.t ->
     ?stroke:Color.t ->
     ?stroke_width:float -> unit -> unit
 end
