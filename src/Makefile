@@ -3,9 +3,6 @@
 # To the extent permitted by law, you can use, modify, and redistribute
 # this file.
 
-#MAGICK_CORE_CFLAGS = $(shell GraphicsMagick-config --cppflags)
-#MAGICK_CORE_CLIBS = $(shell GraphicsMagick-config --libs)
-
 MAGICK_CORE_CFLAGS = $(shell pkg-config --cflags MagickCore)
 MAGICK_CORE_CLIBS = $(shell pkg-config --libs MagickCore)
 
