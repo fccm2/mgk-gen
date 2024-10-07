@@ -168,6 +168,136 @@ caml_magick_exception_info_is_null(value caml_exninfo)
   CAMLreturn(answer);
 }
 
+/* (ExceptionInfo *)->reason */
+
+CAMLprim value
+caml_magick_exception_info_reason(value caml_exninfo)
+{
+  CAMLparam1(caml_exninfo);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  CAMLreturn(
+    (exception->reason) == (char *)NULL ?
+    caml_copy_string("") :
+    caml_copy_string(exception->reason)
+  );
+}
+
+/* (ExceptionInfo *)->description */
+
+CAMLprim value
+caml_magick_exception_info_description(value caml_exninfo)
+{
+  CAMLparam1(caml_exninfo);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  CAMLreturn(
+    (exception->description) == (char *)NULL ?
+    caml_copy_string("") :
+    caml_copy_string(exception->description)
+  );
+}
+
+/* ExceptionType */
+
+CAMLprim value
+caml_magick_exception_info_severity(value caml_exninfo)
+{
+  CAMLparam1(caml_exninfo);
+  value caml_exception_type;
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  switch (exception->severity)
+  {
+    case UndefinedException    : caml_exception_type = Val_int(0); break;
+    case WarningException      : caml_exception_type = Val_int(1); break;
+    case TypeWarning           : caml_exception_type = Val_int(2); break;
+    case OptionWarning         : caml_exception_type = Val_int(3); break;
+    case DelegateWarning       : caml_exception_type = Val_int(4); break;
+    case MissingDelegateWarning: caml_exception_type = Val_int(5); break;
+    case CorruptImageWarning   : caml_exception_type = Val_int(6); break;
+    case FileOpenWarning       : caml_exception_type = Val_int(7); break;
+    case BlobWarning           : caml_exception_type = Val_int(8); break;
+    case StreamWarning         : caml_exception_type = Val_int(9); break;
+    case CacheWarning          : caml_exception_type = Val_int(10); break;
+    case CoderWarning          : caml_exception_type = Val_int(11); break;
+    case FilterWarning         : caml_exception_type = Val_int(12); break;
+    case ModuleWarning         : caml_exception_type = Val_int(13); break;
+    case DrawWarning           : caml_exception_type = Val_int(14); break;
+    case ImageWarning          : caml_exception_type = Val_int(15); break;
+    case WandWarning           : caml_exception_type = Val_int(16); break;
+    case RandomWarning         : caml_exception_type = Val_int(17); break;
+    case XServerWarning        : caml_exception_type = Val_int(18); break;
+    case MonitorWarning        : caml_exception_type = Val_int(19); break;
+    case RegistryWarning       : caml_exception_type = Val_int(20); break;
+    case ConfigureWarning      : caml_exception_type = Val_int(21); break;
+    case PolicyWarning         : caml_exception_type = Val_int(22); break;
+    case ErrorException        : caml_exception_type = Val_int(23); break;
+    case TypeError             : caml_exception_type = Val_int(24); break;
+    case OptionError           : caml_exception_type = Val_int(25); break;
+    case DelegateError         : caml_exception_type = Val_int(26); break;
+    case MissingDelegateError  : caml_exception_type = Val_int(27); break;
+    case CorruptImageError     : caml_exception_type = Val_int(28); break;
+    case FileOpenError         : caml_exception_type = Val_int(29); break;
+    case BlobError             : caml_exception_type = Val_int(30); break;
+    case StreamError           : caml_exception_type = Val_int(31); break;
+    case CacheError            : caml_exception_type = Val_int(32); break;
+    case CoderError            : caml_exception_type = Val_int(33); break;
+    case FilterError           : caml_exception_type = Val_int(34); break;
+    case ModuleError           : caml_exception_type = Val_int(35); break;
+    case DrawError             : caml_exception_type = Val_int(36); break;
+    case ImageError            : caml_exception_type = Val_int(37); break;
+    case WandError             : caml_exception_type = Val_int(38); break;
+    case RandomError           : caml_exception_type = Val_int(39); break;
+    case XServerError          : caml_exception_type = Val_int(40); break;
+    case MonitorError          : caml_exception_type = Val_int(41); break;
+    case RegistryError         : caml_exception_type = Val_int(42); break;
+    case ConfigureError        : caml_exception_type = Val_int(43); break;
+    case PolicyError           : caml_exception_type = Val_int(44); break;
+    case FatalErrorException   : caml_exception_type = Val_int(45); break;
+    case TypeFatalError           : caml_exception_type = Val_int(46); break;
+    case OptionFatalError         : caml_exception_type = Val_int(47); break;
+    case DelegateFatalError       : caml_exception_type = Val_int(48); break;
+    case MissingDelegateFatalError: caml_exception_type = Val_int(49); break;
+    case CorruptImageFatalError   : caml_exception_type = Val_int(50); break;
+    case FileOpenFatalError       : caml_exception_type = Val_int(51); break;
+    case BlobFatalError           : caml_exception_type = Val_int(52); break;
+    case StreamFatalError         : caml_exception_type = Val_int(53); break;
+    case CacheFatalError          : caml_exception_type = Val_int(54); break;
+    case CoderFatalError          : caml_exception_type = Val_int(55); break;
+    case FilterFatalError         : caml_exception_type = Val_int(56); break;
+    case ModuleFatalError         : caml_exception_type = Val_int(57); break;
+    case DrawFatalError           : caml_exception_type = Val_int(58); break;
+    case ImageFatalError          : caml_exception_type = Val_int(59); break;
+    case WandFatalError           : caml_exception_type = Val_int(60); break;
+    case RandomFatalError         : caml_exception_type = Val_int(61); break;
+    case XServerFatalError        : caml_exception_type = Val_int(62); break;
+    case MonitorFatalError        : caml_exception_type = Val_int(63); break;
+    case RegistryFatalError       : caml_exception_type = Val_int(64); break;
+    case ConfigureFatalError      : caml_exception_type = Val_int(65); break;
+    case PolicyFatalError         : caml_exception_type = Val_int(66); break;
+
+    default: caml_exception_type = Val_int(0); break;
+  }
+
+  CAMLreturn(caml_exception_type);
+}
+
 /* CloneImageInfo() */
 
 CAMLprim value

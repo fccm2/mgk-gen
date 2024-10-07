@@ -190,3 +190,79 @@ module Magick : sig
     ?stroke_width:float -> unit -> unit
 end
 
+(* exception-info *)
+
+type exception_type =
+  | UndefinedException
+  | WarningException
+  | TypeWarning
+  | OptionWarning
+  | DelegateWarning
+  | MissingDelegateWarning
+  | CorruptImageWarning
+  | FileOpenWarning
+  | BlobWarning
+  | StreamWarning
+  | CacheWarning
+  | CoderWarning
+  | FilterWarning
+  | ModuleWarning
+  | DrawWarning
+  | ImageWarning
+  | WandWarning
+  | RandomWarning
+  | XServerWarning
+  | MonitorWarning
+  | RegistryWarning
+  | ConfigureWarning
+  | PolicyWarning
+  | ErrorException
+  | TypeError
+  | OptionError
+  | DelegateError
+  | MissingDelegateError
+  | CorruptImageError
+  | FileOpenError
+  | BlobError
+  | StreamError
+  | CacheError
+  | CoderError
+  | FilterError
+  | ModuleError
+  | DrawError
+  | ImageError
+  | WandError
+  | RandomError
+  | XServerError
+  | MonitorError
+  | RegistryError
+  | ConfigureError
+  | PolicyError
+  | FatalErrorException
+  | TypeFatalError
+  | OptionFatalError
+  | DelegateFatalError
+  | MissingDelegateFatalError
+  | CorruptImageFatalError
+  | FileOpenFatalError
+  | BlobFatalError
+  | StreamFatalError
+  | CacheFatalError
+  | CoderFatalError
+  | FilterFatalError
+  | ModuleFatalError
+  | DrawFatalError
+  | ImageFatalError
+  | WandFatalError
+  | RandomFatalError
+  | XServerFatalError
+  | MonitorFatalError
+  | RegistryFatalError
+  | ConfigureFatalError
+  | PolicyFatalError
+
+val magick_exception_info_reason : exception_info -> string
+val magick_exception_info_description : exception_info -> string
+val magick_exception_info_severity : exception_info -> exception_type
+val exception_severity_string : exception_type -> string
+

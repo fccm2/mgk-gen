@@ -103,6 +103,155 @@ external magick_image_new : image_info -> int -> int -> color -> image
 external magick_image_display : image_info -> image -> unit
   = "caml_magick_image_display"
 
+(* exception-info *)
+
+type exception_type =
+  | UndefinedException
+  | WarningException
+  | TypeWarning
+  | OptionWarning
+  | DelegateWarning
+  | MissingDelegateWarning
+  | CorruptImageWarning
+  | FileOpenWarning
+  | BlobWarning
+  | StreamWarning
+  | CacheWarning
+  | CoderWarning
+  | FilterWarning
+  | ModuleWarning
+  | DrawWarning
+  | ImageWarning
+  | WandWarning
+  | RandomWarning
+  | XServerWarning
+  | MonitorWarning
+  | RegistryWarning
+  | ConfigureWarning
+  | PolicyWarning
+  | ErrorException
+  | TypeError
+  | OptionError
+  | DelegateError
+  | MissingDelegateError
+  | CorruptImageError
+  | FileOpenError
+  | BlobError
+  | StreamError
+  | CacheError
+  | CoderError
+  | FilterError
+  | ModuleError
+  | DrawError
+  | ImageError
+  | WandError
+  | RandomError
+  | XServerError
+  | MonitorError
+  | RegistryError
+  | ConfigureError
+  | PolicyError
+  | FatalErrorException
+  | TypeFatalError
+  | OptionFatalError
+  | DelegateFatalError
+  | MissingDelegateFatalError
+  | CorruptImageFatalError
+  | FileOpenFatalError
+  | BlobFatalError
+  | StreamFatalError
+  | CacheFatalError
+  | CoderFatalError
+  | FilterFatalError
+  | ModuleFatalError
+  | DrawFatalError
+  | ImageFatalError
+  | WandFatalError
+  | RandomFatalError
+  | XServerFatalError
+  | MonitorFatalError
+  | RegistryFatalError
+  | ConfigureFatalError
+  | PolicyFatalError
+
+external magick_exception_info_reason : exception_info -> string
+  = "caml_magick_exception_info_reason"
+
+external magick_exception_info_description : exception_info -> string
+  = "caml_magick_exception_info_description"
+
+external magick_exception_info_severity : exception_info -> exception_type
+  = "caml_magick_exception_info_severity"
+
+let exception_severity_string = function
+  | UndefinedException          -> "UndefinedException"
+  | WarningException            -> "WarningException"
+  | TypeWarning                 -> "TypeWarning"
+  | OptionWarning               -> "OptionWarning"
+  | DelegateWarning             -> "DelegateWarning"
+  | MissingDelegateWarning      -> "MissingDelegateWarning"
+  | CorruptImageWarning         -> "CorruptImageWarning"
+  | FileOpenWarning             -> "FileOpenWarning"
+  | BlobWarning                 -> "BlobWarning"
+  | StreamWarning               -> "StreamWarning"
+  | CacheWarning                -> "CacheWarning"
+  | CoderWarning                -> "CoderWarning"
+  | FilterWarning               -> "FilterWarning"
+  | ModuleWarning               -> "ModuleWarning"
+  | DrawWarning                 -> "DrawWarning"
+  | ImageWarning                -> "ImageWarning"
+  | WandWarning                 -> "WandWarning"
+  | RandomWarning               -> "RandomWarning"
+  | XServerWarning              -> "XServerWarning"
+  | MonitorWarning              -> "MonitorWarning"
+  | RegistryWarning             -> "RegistryWarning"
+  | ConfigureWarning            -> "ConfigureWarning"
+  | PolicyWarning               -> "PolicyWarning"
+  | ErrorException              -> "ErrorException"
+  | TypeError                   -> "TypeError"
+  | OptionError                 -> "OptionError"
+  | DelegateError               -> "DelegateError"
+  | MissingDelegateError        -> "MissingDelegateError"
+  | CorruptImageError           -> "CorruptImageError"
+  | FileOpenError               -> "FileOpenError"
+  | BlobError                   -> "BlobError"
+  | StreamError                 -> "StreamError"
+  | CacheError                  -> "CacheError"
+  | CoderError                  -> "CoderError"
+  | FilterError                 -> "FilterError"
+  | ModuleError                 -> "ModuleError"
+  | DrawError                   -> "DrawError"
+  | ImageError                  -> "ImageError"
+  | WandError                   -> "WandError"
+  | RandomError                 -> "RandomError"
+  | XServerError                -> "XServerError"
+  | MonitorError                -> "MonitorError"
+  | RegistryError               -> "RegistryError"
+  | ConfigureError              -> "ConfigureError"
+  | PolicyError                 -> "PolicyError"
+  | FatalErrorException         -> "FatalErrorException"
+  | TypeFatalError              -> "TypeFatalError"
+  | OptionFatalError            -> "OptionFatalError"
+  | DelegateFatalError          -> "DelegateFatalError"
+  | MissingDelegateFatalError   -> "MissingDelegateFatalError"
+  | CorruptImageFatalError      -> "CorruptImageFatalError"
+  | FileOpenFatalError          -> "FileOpenFatalError"
+  | BlobFatalError              -> "BlobFatalError"
+  | StreamFatalError            -> "StreamFatalError"
+  | CacheFatalError             -> "CacheFatalError"
+  | CoderFatalError             -> "CoderFatalError"
+  | FilterFatalError            -> "FilterFatalError"
+  | ModuleFatalError            -> "ModuleFatalError"
+  | DrawFatalError              -> "DrawFatalError"
+  | ImageFatalError             -> "ImageFatalError"
+  | WandFatalError              -> "WandFatalError"
+  | RandomFatalError            -> "RandomFatalError"
+  | XServerFatalError           -> "XServerFatalError"
+  | MonitorFatalError           -> "MonitorFatalError"
+  | RegistryFatalError          -> "RegistryFatalError"
+  | ConfigureFatalError         -> "ConfigureFatalError"
+  | PolicyFatalError            -> "PolicyFatalError"
+
 (* effects *)
 
 external magick_image_blur : image -> radius:float -> sigma:float -> exception_info -> image
