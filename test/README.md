@@ -14,6 +14,7 @@ these examples, can be used to test if everything works as expected.
 - `test_12.ml`: example with draw text primitive (low)
 - `test_13.ml`: example with 'edge', and 'negate' (high)
 - `test_14.ml`: equalize example (high)
+- `test_15.ml`: despeckle / `add_noise` (high)
 
 (low): using the low-level interface  
 (high): using the high-level interface
