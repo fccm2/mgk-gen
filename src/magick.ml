@@ -321,14 +321,79 @@ external magick_image_colorspace_transform: image -> ColorSpace.t -> unit
   = "caml_magick_image_colorspace_transform"
 
 module CompositeOp = struct
-  type t = ColorBurn | ColorDodge | Colorize | Darken | DstAtop | DstIn
-    | DstOut | DstOver | Difference | Displace | Dissolve | Exclusion
-    | HardLight | Hue | In | Lighten | LinearLight | Luminize | MinusDst
-    | Modulate | Multiply | Out | Over | Overlay | Plus | Saturate | Screen
-    | SoftLight | SrcAtop | Src | SrcIn | SrcOut | SrcOver | ModulusSubtract
-    | Threshold | Xor | DivideDst | Distort | Blur | PegtopLight | VividLight
-    | PinLight | LinearDodge | LinearBurn | DivideSrc | MinusSrc | Blend
-    | Bumpmap | HardMix
+  type t = Undefined | No | ModulusAdd | Atop | Blend | Bumpmap | ChangeMask
+    | Clear | ColorBurn | ColorDodge | Colorize | CopyBlack | CopyBlue | Copy
+    | CopyCyan | CopyGreen | CopyMagenta | CopyOpacity | CopyRed | CopyYellow
+    | Darken | DstAtop | Dst | DstIn | DstOut | DstOver | Difference | Displace
+    | Dissolve | Exclusion | HardLight | Hue | In | Lighten | LinearLight
+    | Luminize | MinusDst | Modulate | Multiply | Out | Over | Overlay | Plus
+    | Replace | Saturate | Screen | SoftLight | SrcAtop | Src | SrcIn | SrcOut
+    | SrcOver | ModulusSubtract | Threshold | Xor | DivideDst | Distort | Blur
+    | PegtopLight | VividLight | PinLight | LinearDodge | LinearBurn
+    | Mathematics | DivideSrc | MinusSrc | DarkenIntensity | LightenIntensity
+    | HardMix | Stereo
+
+  let of_string s =
+    match String.lowercase_ascii s with
+    | "undefined" -> Undefined | "no" -> No | "modulusadd" -> ModulusAdd
+    | "atop" -> Atop | "blend" -> Blend | "bumpmap" -> Bumpmap
+    | "changemask" -> ChangeMask | "clear" -> Clear | "colorburn" -> ColorBurn
+    | "colordodge" -> ColorDodge | "colorize" -> Colorize
+    | "copyblack" -> CopyBlack | "copyblue" -> CopyBlue | "copy" -> Copy
+    | "copycyan" -> CopyCyan | "copygreen" -> CopyGreen
+    | "copymagenta" -> CopyMagenta | "copyopacity" -> CopyOpacity
+    | "copyred" -> CopyRed | "copyyellow" -> CopyYellow | "darken" -> Darken
+    | "dstatop" -> DstAtop | "dst" -> Dst | "dstin" -> DstIn | "dstout" -> DstOut
+    | "dstover" -> DstOver | "difference" -> Difference
+    | "displace" -> Displace | "dissolve" -> Dissolve
+    | "exclusion" -> Exclusion | "hardlight" -> HardLight | "hue" -> Hue
+    | "in" -> In | "lighten" -> Lighten | "linearlight" -> LinearLight
+    | "luminize" -> Luminize | "minusdst" -> MinusDst | "modulate" -> Modulate
+    | "multiply" -> Multiply | "out" -> Out | "over" -> Over
+    | "overlay" -> Overlay | "plus" -> Plus | "replace" -> Replace
+    | "saturate" -> Saturate | "screen" -> Screen | "softlight" -> SoftLight
+    | "srcatop" -> SrcAtop | "src" -> Src | "srcin" -> SrcIn
+    | "srcout" -> SrcOut | "srcover" -> SrcOver
+    | "modulussubtract" -> ModulusSubtract | "threshold" -> Threshold
+    | "xor" -> Xor | "dividedst" -> DivideDst | "distort" -> Distort
+    | "blur" -> Blur | "pegtoplight" -> PegtopLight
+    | "vividlight" -> VividLight | "pinlight" -> PinLight
+    | "lineardodge" -> LinearDodge | "linearburn" -> LinearBurn
+    | "mathematics" -> Mathematics | "dividesrc" -> DivideSrc
+    | "minussrc" -> MinusSrc | "darkenintensity" -> DarkenIntensity
+    | "lightenintensity" -> LightenIntensity | "hardmix" -> HardMix
+    | "stereo" -> Stereo
+    | _ -> invalid_arg "of_string"
+
+  let to_string = function
+    | Undefined -> "Undefined" | No -> "No" | ModulusAdd -> "ModulusAdd"
+    | Atop -> "Atop" | Blend -> "Blend" | Bumpmap -> "Bumpmap"
+    | ChangeMask -> "ChangeMask" | Clear -> "Clear" | ColorBurn -> "ColorBurn"
+    | ColorDodge -> "ColorDodge" | Colorize -> "Colorize"
+    | CopyBlack -> "CopyBlack" | CopyBlue -> "CopyBlue" | Copy -> "Copy"
+    | CopyCyan -> "CopyCyan" | CopyGreen -> "CopyGreen"
+    | CopyMagenta -> "CopyMagenta" | CopyOpacity -> "CopyOpacity"
+    | CopyRed -> "CopyRed" | CopyYellow -> "CopyYellow" | Darken -> "Darken"
+    | DstAtop -> "DstAtop" | Dst  -> "Dst" | DstIn -> "DstIn"
+    | DstOut -> "DstOut" | DstOver -> "DstOver" | Difference -> "Difference"
+    | Displace -> "Displace" | Dissolve -> "Dissolve" | Exclusion -> "Exclusion"
+    | HardLight -> "HardLight" | Hue  -> "Hue" | In -> "In"
+    | Lighten -> "Lighten" | LinearLight -> "LinearLight"
+    | Luminize -> "Luminize" | MinusDst -> "MinusDst" | Modulate -> "Modulate"
+    | Multiply -> "Multiply" | Out -> "Out" | Over -> "Over"
+    | Overlay -> "Overlay" | Plus -> "Plus" | Replace -> "Replace"
+    | Saturate -> "Saturate" | Screen -> "Screen" | SoftLight -> "SoftLight"
+    | SrcAtop -> "SrcAtop" | Src  -> "Src" | SrcIn -> "SrcIn"
+    | SrcOut -> "SrcOut" | SrcOver -> "SrcOver"
+    | ModulusSubtract -> "ModulusSubtract" | Threshold -> "Threshold"
+    | Xor -> "Xor" | DivideDst -> "DivideDst" | Distort -> "Distort"
+    | Blur -> "Blur" | PegtopLight -> "PegtopLight"
+    | VividLight -> "VividLight" | PinLight -> "PinLight"
+    | LinearDodge -> "LinearDodge" | LinearBurn -> "LinearBurn"
+    | Mathematics -> "Mathematics" | DivideSrc -> "DivideSrc"
+    | MinusSrc -> "MinusSrc" | DarkenIntensity -> "DarkenIntensity"
+    | LightenIntensity -> "LightenIntensity" | HardMix -> "HardMix"
+    | Stereo -> "Stereo"
 end
 
 external magick_image_composite:
@@ -346,6 +411,8 @@ external magick_draw_info_set_stroke: draw_info -> color -> unit = "caml_magick_
 
 external magick_draw_info_set_stroke_width: draw_info -> float -> unit = "caml_magick_draw_info_set_stroke_width"
 external magick_draw_info_set_primitive: draw_info -> string -> unit = "caml_magick_draw_info_set_primitive"
+
+external magick_draw_info_set_compose: draw_info -> CompositeOp.t -> unit = "caml_magick_draw_info_set_compose"
 
 external magick_draw_info_set_font: draw_info -> string -> unit = "caml_magick_draw_info_set_font"
 external magick_draw_info_set_pointsize: draw_info -> float -> unit = "caml_magick_draw_info_set_pointsize"

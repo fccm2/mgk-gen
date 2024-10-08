@@ -133,14 +133,20 @@ val magick_image_colorspace_transform : image -> ColorSpace.t -> unit
 (** {4 composite} *)
 
 module CompositeOp : sig
-  type t = ColorBurn | ColorDodge | Colorize | Darken | DstAtop | DstIn
-    | DstOut | DstOver | Difference | Displace | Dissolve | Exclusion
-    | HardLight | Hue | In | Lighten | LinearLight | Luminize | MinusDst
-    | Modulate | Multiply | Out | Over | Overlay | Plus | Saturate | Screen
-    | SoftLight | SrcAtop | Src | SrcIn | SrcOut | SrcOver | ModulusSubtract
-    | Threshold | Xor | DivideDst | Distort | Blur | PegtopLight | VividLight
-    | PinLight | LinearDodge | LinearBurn | DivideSrc | MinusSrc | Blend
-    | Bumpmap | HardMix
+  type t = Undefined | No | ModulusAdd | Atop | Blend | Bumpmap | ChangeMask
+    | Clear | ColorBurn | ColorDodge | Colorize | CopyBlack | CopyBlue | Copy
+    | CopyCyan | CopyGreen | CopyMagenta | CopyOpacity | CopyRed | CopyYellow
+    | Darken | DstAtop | Dst | DstIn | DstOut | DstOver | Difference | Displace
+    | Dissolve | Exclusion | HardLight | Hue | In | Lighten | LinearLight
+    | Luminize | MinusDst | Modulate | Multiply | Out | Over | Overlay | Plus
+    | Replace | Saturate | Screen | SoftLight | SrcAtop | Src | SrcIn | SrcOut
+    | SrcOver | ModulusSubtract | Threshold | Xor | DivideDst | Distort | Blur
+    | PegtopLight | VividLight | PinLight | LinearDodge | LinearBurn
+    | Mathematics | DivideSrc | MinusSrc | DarkenIntensity | LightenIntensity
+    | HardMix | Stereo
+
+  val of_string : string -> t
+  val to_string : t -> string
 end
 
 val magick_image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
@@ -172,6 +178,8 @@ val magick_draw_info_set_primitive: draw_info -> string -> unit
 
 val magick_draw_info_set_font: draw_info -> string -> unit
 val magick_draw_info_set_pointsize: draw_info -> float -> unit
+
+val magick_draw_info_set_compose: draw_info -> CompositeOp.t -> unit
 
 val magick_image_draw: image -> draw_info -> unit
 

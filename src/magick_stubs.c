@@ -96,6 +96,86 @@ static value Val_drawinfo(DrawInfo *draw_info)
 
 
 
+/* CompositeOperator */
+
+static const CompositeOperator composite_op_table[] = {
+  UndefinedCompositeOp,
+  NoCompositeOp,
+  ModulusAddCompositeOp,
+  AtopCompositeOp,
+  BlendCompositeOp,
+  BumpmapCompositeOp,
+  ChangeMaskCompositeOp,
+  ClearCompositeOp,
+  ColorBurnCompositeOp,
+  ColorDodgeCompositeOp,
+  ColorizeCompositeOp,
+  CopyBlackCompositeOp,
+  CopyBlueCompositeOp,
+  CopyCompositeOp,
+  CopyCyanCompositeOp,
+  CopyGreenCompositeOp,
+  CopyMagentaCompositeOp,
+  CopyOpacityCompositeOp,
+  CopyRedCompositeOp,
+  CopyYellowCompositeOp,
+  DarkenCompositeOp,
+  DstAtopCompositeOp,
+  DstCompositeOp,
+  DstInCompositeOp,
+  DstOutCompositeOp,
+  DstOverCompositeOp,
+  DifferenceCompositeOp,
+  DisplaceCompositeOp,
+  DissolveCompositeOp,
+  ExclusionCompositeOp,
+  HardLightCompositeOp,
+  HueCompositeOp,
+  InCompositeOp,
+  LightenCompositeOp,
+  LinearLightCompositeOp,
+  LuminizeCompositeOp,
+  MinusDstCompositeOp,
+  ModulateCompositeOp,
+  MultiplyCompositeOp,
+  OutCompositeOp,
+  OverCompositeOp,
+  OverlayCompositeOp,
+  PlusCompositeOp,
+  ReplaceCompositeOp,
+  SaturateCompositeOp,
+  ScreenCompositeOp,
+  SoftLightCompositeOp,
+  SrcAtopCompositeOp,
+  SrcCompositeOp,
+  SrcInCompositeOp,
+  SrcOutCompositeOp,
+  SrcOverCompositeOp,
+  ModulusSubtractCompositeOp,
+  ThresholdCompositeOp,
+  XorCompositeOp,
+  DivideDstCompositeOp,
+  DistortCompositeOp,
+  BlurCompositeOp,
+  PegtopLightCompositeOp,
+  VividLightCompositeOp,
+  PinLightCompositeOp,
+  LinearDodgeCompositeOp,
+  LinearBurnCompositeOp,
+  MathematicsCompositeOp,
+  DivideSrcCompositeOp,
+  MinusSrcCompositeOp,
+  DarkenIntensityCompositeOp,
+  LightenIntensityCompositeOp,
+  HardMixCompositeOp,
+  StereoCompositeOp
+};
+
+#define Compositeop_val(v) \
+  composite_op_table[Long_val(v)]
+
+
+
 /* MagickCoreGenesis() */
 
 CAMLprim value
@@ -1090,62 +1170,6 @@ caml_magick_image_colorspace_transform(value caml_image, value caml_colorspace)
 
 /* CompositeImage() */
 
-static const CompositeOperator composite_op_table[] = {
-  ColorBurnCompositeOp,
-  ColorDodgeCompositeOp,
-  ColorizeCompositeOp,
-  DarkenCompositeOp,
-  DstAtopCompositeOp,
-  DstInCompositeOp,
-  DstOutCompositeOp,
-  DstOverCompositeOp,
-  DifferenceCompositeOp,
-  DisplaceCompositeOp,
-  DissolveCompositeOp,
-  ExclusionCompositeOp,
-  HardLightCompositeOp,
-  HueCompositeOp,
-  InCompositeOp,
-  LightenCompositeOp,
-  LinearLightCompositeOp,
-  LuminizeCompositeOp,
-  MinusDstCompositeOp,
-  ModulateCompositeOp,
-  MultiplyCompositeOp,
-  OutCompositeOp,
-  OverCompositeOp,
-  OverlayCompositeOp,
-  PlusCompositeOp,
-  SaturateCompositeOp,
-  ScreenCompositeOp,
-  SoftLightCompositeOp,
-  SrcAtopCompositeOp,
-  SrcCompositeOp,
-  SrcInCompositeOp,
-  SrcOutCompositeOp,
-  SrcOverCompositeOp,
-  ModulusSubtractCompositeOp,
-  ThresholdCompositeOp,
-  XorCompositeOp,
-  DivideDstCompositeOp,
-  DistortCompositeOp,
-  BlurCompositeOp,
-  PegtopLightCompositeOp,
-  VividLightCompositeOp,
-  PinLightCompositeOp,
-  LinearDodgeCompositeOp,
-  LinearBurnCompositeOp,
-  DivideSrcCompositeOp,
-  MinusSrcCompositeOp,
-  BlendCompositeOp,
-  BumpmapCompositeOp,
-  HardMixCompositeOp,
-  DarkenIntensityCompositeOp,
-  LightenIntensityCompositeOp,
-
-  /* add more elements here, if you need, from: "magick/composite.h" */
-};
-
 CAMLprim value
 caml_magick_image_composite(
     value caml_image1,
@@ -1154,7 +1178,7 @@ caml_magick_image_composite(
 {
   CAMLparam5(caml_image1, caml_composite_op, caml_image2, x, y);
 
-  CompositeOperator composite_op = composite_op_table[Long_val(caml_composite_op)];
+  CompositeOperator composite_op = Compositeop_val(caml_composite_op);
 
   Image *image1 = Img_val(caml_image1);
   Image *image2 = Img_val(caml_image2);
@@ -1268,6 +1292,24 @@ caml_magick_draw_info_set_stroke_width(
   }
 
   draw_info->stroke_width = Double_val(caml_stroke_width);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_magick_draw_info_set_compose(
+    value caml_draw_info,
+    value caml_compose)
+{
+  CAMLparam2(caml_draw_info, caml_compose);
+
+  DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
+
+  if (draw_info == (DrawInfo *)NULL) {
+    caml_failwith("DrawInfo is NULL");
+  }
+
+  draw_info->compose = Compositeop_val(caml_compose);
 
   CAMLreturn(Val_unit);
 }
