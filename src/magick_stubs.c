@@ -827,6 +827,29 @@ caml_magick_image_modulate(
   CAMLreturn(Val_unit);
 }
 
+/* NegateImage() */
+
+CAMLprim value
+caml_magick_image_negate(
+    value caml_image)
+{
+  CAMLparam1(caml_image);
+
+  Image *image = Img_val(caml_image);
+
+  MagickBooleanType param;
+
+  MagickBooleanType ret;
+  ret = NegateImage(image, param);
+
+  if (ret == MagickFalse)
+  {
+    caml_failwith("Error image negate");
+  }
+
+  CAMLreturn(Val_unit);
+}
+
 /* EdgeImage() */
 
 CAMLprim value

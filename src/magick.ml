@@ -282,6 +282,9 @@ external magick_image_charcoal : image -> radius:float -> sigma:float -> excepti
 external magick_image_modulate : image -> modulate:string -> unit
   = "caml_magick_image_modulate"
 
+external magick_image_negate : image -> unit
+  = "caml_magick_image_negate"
+
 (* resize *)
 
 external magick_image_scale : image -> int * int -> exception_info -> image
@@ -428,7 +431,6 @@ module Magick = struct
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
 
-
   let image_scale img ~size =
     let e = Magick._magick_exception_info_acquire () in
     let img2 = Magick.magick_image_scale img size e in
@@ -458,6 +460,10 @@ module Magick = struct
   let image_hue img hue =
     Magick.magick_image_modulate img ~modulate:(
       Printf.sprintf "100,100,%d" hue);
+    ()
+
+  let image_negate img =
+    Magick.magick_image_negate img;
     ()
 
   let image_composite img1 comp_op img2 x y =

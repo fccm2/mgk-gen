@@ -99,6 +99,8 @@ val magick_image_charcoal :
 val magick_image_modulate : image -> modulate:string -> unit
 (** modulate:(brightness, saturation, hue), default is 100 *)
 
+val magick_image_negate : image -> unit
+
 (* resize *)
 
 val magick_image_scale : image -> int * int -> exception_info -> image
@@ -192,6 +194,7 @@ module Magick : sig
   val image_brightness : image -> int -> unit
   val image_saturation : image -> int -> unit
   val image_hue : image -> int -> unit
+  val image_negate : image -> unit
 
   module Color: sig
     type t = color
