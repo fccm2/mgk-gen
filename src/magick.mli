@@ -97,6 +97,18 @@ val magick_image_despeckle :
 val magick_image_charcoal :
   image -> radius:float -> sigma:float -> exception_info -> image
 
+type noise_type =
+  | UndefinedNoise
+  | UniformNoise
+  | GaussianNoise
+  | MultiplicativeGaussianNoise
+  | ImpulseNoise
+  | LaplacianNoise
+  | PoissonNoise
+  | RandomNoise
+
+val magick_image_add_noise : image -> noise_type -> exception_info -> image
+
 (** {4 enhance} *)
 
 val magick_image_modulate : image -> modulate:string -> unit
@@ -202,6 +214,7 @@ module Magick : sig
   val image_hue : image -> int -> unit
   val image_negate : image -> unit
   val image_equalize : image -> unit
+  val image_add_noise : image -> noise_type -> image
 
   module Color: sig
     type t = color

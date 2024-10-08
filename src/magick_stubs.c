@@ -645,6 +645,59 @@ caml_magick_image_charcoal(
   CAMLreturn(caml_image_2);
 }
 
+/* AddNoiseImage() */
+
+static const NoiseType noise_type_table[] = {
+  UndefinedNoise,
+  UniformNoise,
+  GaussianNoise,
+  MultiplicativeGaussianNoise,
+  ImpulseNoise,
+  LaplacianNoise,
+  PoissonNoise,
+  RandomNoise
+};
+
+CAMLprim value
+caml_magick_image_add_noise(
+    value caml_image, value caml_noise_type,
+    value caml_exninfo)
+{
+  CAMLparam3(caml_image, caml_noise_type, caml_exninfo);
+  CAMLlocal1(caml_image_2);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  Image *image = Img_val(caml_image);
+  Image *image_2;
+  NoiseType noise_type;
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  noise_type = noise_type_table[Long_val(caml_noise_type)];
+
+  image_2 = AddNoiseImage(image, noise_type, exception);
+
+  if (image_2 == (Image *)NULL) {
+    caml_failwith("Error add_noise image");
+  }
+
+  if (exception->severity != UndefinedException)
+  {
+    caml_failwith("Error add_noise image");
+  }
+
+  caml_image_2 = Val_img(image_2);
+
+  CAMLreturn(caml_image_2);
+}
+
 /* ShadeImage() */
 
 CAMLprim value

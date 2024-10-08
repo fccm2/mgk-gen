@@ -280,6 +280,19 @@ external magick_image_despeckle : image -> exception_info -> image
 external magick_image_charcoal : image -> radius:float -> sigma:float -> exception_info -> image
   = "caml_magick_image_charcoal"
 
+type noise_type =
+  | UndefinedNoise
+  | UniformNoise
+  | GaussianNoise
+  | MultiplicativeGaussianNoise
+  | ImpulseNoise
+  | LaplacianNoise
+  | PoissonNoise
+  | RandomNoise
+
+external magick_image_add_noise : image -> noise_type -> exception_info -> image
+  = "caml_magick_image_add_noise"
+
 (* enhance *)
 
 external magick_image_modulate : image -> modulate:string -> unit
@@ -440,6 +453,13 @@ module Magick = struct
   let image_despeckle img =
     let e = Magick._magick_exception_info_acquire () in
     let img2 = Magick.magick_image_despeckle img e in
+    Magick._magick_exception_info_destroy e;
+    Gc.finalise Magick.magick_image_destroy img2;
+    (img2)
+
+  let image_add_noise img noise_type =
+    let e = Magick._magick_exception_info_acquire () in
+    let img2 = Magick.magick_image_add_noise img noise_type e in
     Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
