@@ -1,2 +1,6 @@
 The "META" file is un-tested.
 The "find_install" target from "src/Makefile" is also un-tested.
+
+Calling "magick_draw_info_set_compose", before "magick_image_draw"
+doesn't seem to create any visible effect.
+
