@@ -802,6 +802,45 @@ caml_magick_image_emboss(
   CAMLreturn(caml_image_2);
 }
 
+/* DespeckleImage() */
+
+CAMLprim value
+caml_magick_image_despeckle(
+    value caml_image,
+    value caml_exninfo)
+{
+  CAMLparam2(caml_image, caml_exninfo);
+  CAMLlocal1(caml_image_2);
+
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  Image *image = Img_val(caml_image);
+  Image *image_2;
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  image_2 = DespeckleImage(image, exception);
+
+  if (image_2 == (Image *)NULL) {
+    caml_failwith("Error despeckle image");
+  }
+
+  if (exception->severity != UndefinedException)
+  {
+    caml_failwith("Error despeckle image");
+  }
+
+  caml_image_2 = Val_img(image_2);
+
+  CAMLreturn(caml_image_2);
+}
+
 /* ModulateImage() */
 
 CAMLprim value
@@ -849,6 +888,27 @@ caml_magick_image_negate(
   if (ret == MagickFalse)
   {
     caml_failwith("Error image negate");
+  }
+
+  CAMLreturn(Val_unit);
+}
+
+/* EqualizeImage() */
+
+CAMLprim value
+caml_magick_image_equalize(
+    value caml_image)
+{
+  CAMLparam1(caml_image);
+
+  Image *image = Img_val(caml_image);
+
+  MagickBooleanType ret;
+  ret = EqualizeImage(image);
+
+  if (ret == MagickFalse)
+  {
+    caml_failwith("Error equalize image");
   }
 
   CAMLreturn(Val_unit);

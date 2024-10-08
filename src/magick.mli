@@ -89,6 +89,9 @@ val magick_image_emboss :
 val magick_image_edge :
   image -> radius:float -> exception_info -> image
 
+val magick_image_despeckle :
+  image -> exception_info -> image
+
 (* visual-effects *)
 
 val magick_image_charcoal :
@@ -100,6 +103,8 @@ val magick_image_modulate : image -> modulate:string -> unit
 (** modulate:(brightness, saturation, hue), default is 100 *)
 
 val magick_image_negate : image -> unit
+
+val magick_image_equalize : image -> unit
 
 (* resize *)
 
@@ -185,6 +190,7 @@ module Magick : sig
   val image_sharpen : image -> radius:float -> sigma:float -> image
   val image_shade : image -> gray:bool -> azimuth:float -> elevation:float -> image
   val image_edge : image -> radius:float -> image
+  val image_despeckle : image -> image
   val image_emboss : image -> radius:float -> sigma:float -> image
   val image_colorspace_transform : image -> ColorSpace.t -> unit
   val image_scale : image -> size:int * int -> image
@@ -195,6 +201,7 @@ module Magick : sig
   val image_saturation : image -> int -> unit
   val image_hue : image -> int -> unit
   val image_negate : image -> unit
+  val image_equalize : image -> unit
 
   module Color: sig
     type t = color
