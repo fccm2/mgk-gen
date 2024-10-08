@@ -1327,6 +1327,10 @@ caml_magick_draw_info_set_primitive(
     caml_failwith("DrawInfo is NULL");
   }
 
+  if (draw_info->primitive != (char *)NULL) {
+    draw_info->primitive = DestroyString(draw_info->primitive);
+  }
+
   draw_info->primitive = AcquireString(String_val(caml_primitive));
 
   CAMLreturn(Val_unit);
@@ -1343,6 +1347,10 @@ caml_magick_draw_info_set_font(
 
   if (draw_info == (DrawInfo *)NULL) {
     caml_failwith("DrawInfo is NULL");
+  }
+
+  if (draw_info->font != (char *)NULL) {
+    draw_info->font = DestroyString(draw_info->font);
   }
 
   draw_info->font = AcquireString(String_val(caml_font));
