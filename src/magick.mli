@@ -92,12 +92,12 @@ val magick_image_edge :
 val magick_image_despeckle :
   image -> exception_info -> image
 
-(* visual-effects *)
+(** {4 visual-effects} *)
 
 val magick_image_charcoal :
   image -> radius:float -> sigma:float -> exception_info -> image
 
-(* enhance *)
+(** {4 enhance} *)
 
 val magick_image_modulate : image -> modulate:string -> unit
 (** modulate:(brightness, saturation, hue), default is 100 *)
@@ -106,7 +106,7 @@ val magick_image_negate : image -> unit
 
 val magick_image_equalize : image -> unit
 
-(* resize *)
+(** {4 resize} *)
 
 val magick_image_scale : image -> int * int -> exception_info -> image
 
