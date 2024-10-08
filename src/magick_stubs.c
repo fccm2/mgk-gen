@@ -838,8 +838,12 @@ caml_magick_image_negate(
   Image *image = Img_val(caml_image);
 
   MagickBooleanType param;
-
   MagickBooleanType ret;
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
   ret = NegateImage(image, param);
 
   if (ret == MagickFalse)
