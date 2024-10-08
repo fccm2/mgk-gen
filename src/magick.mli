@@ -125,7 +125,10 @@ val magick_image_scale : image -> int * int -> exception_info -> image
 (** {4 color-space} *)
 
 module ColorSpace : sig
-  type t = RGB | GRAY | CMYK | HSL | CMY | Luv | LCHab | LCHuv
+  type t = Undefined | RGB | GRAY | Transparent | OHTA | Lab | XYZ | YCbCr
+    | YCC | YIQ | YPbPr | YUV | CMYK | SRGB | HSB | HSL | HWB | Rec601Luma
+    | Rec601YCbCr | Rec709Luma | Rec709YCbCr | Log | CMY | Luv | HCL | LCH
+    | LMS | LCHab | LCHuv | ScRGB | HSI | HSV | HCLp | YDbDr | XyY | LinearGRAY
 end
 
 val magick_image_colorspace_transform : image -> ColorSpace.t -> unit

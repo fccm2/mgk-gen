@@ -1136,15 +1136,42 @@ caml_magick_image_display(
 /* TransformImageColorspace() */
 
 static const ColorspaceType colorspace_table[] = {
+  UndefinedColorspace,
   RGBColorspace,
   GRAYColorspace,
+  TransparentColorspace,
+  OHTAColorspace,
+  LabColorspace,
+  XYZColorspace,
+  YCbCrColorspace,
+  YCCColorspace,
+  YIQColorspace,
+  YPbPrColorspace,
+  YUVColorspace,
   CMYKColorspace,
+  sRGBColorspace,
+  HSBColorspace,
   HSLColorspace,
+  HWBColorspace,
+  Rec601LumaColorspace,
+  Rec601YCbCrColorspace,
+  Rec709LumaColorspace,
+  Rec709YCbCrColorspace,
+  LogColorspace,
   CMYColorspace,
   LuvColorspace,
+  HCLColorspace,
+  LCHColorspace,
+  LMSColorspace,
   LCHabColorspace,
   LCHuvColorspace,
-  /* add more elements here, if you need, from: "magick/colorspace.h" */
+  scRGBColorspace,
+  HSIColorspace,
+  HSVColorspace,
+  HCLpColorspace,
+  YDbDrColorspace,
+  xyYColorspace,
+  LinearGRAYColorspace
 };
 
 CAMLprim value
