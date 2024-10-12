@@ -293,6 +293,9 @@ type noise_type =
 external magick_image_add_noise : image -> noise_type -> exception_info -> image
   = "caml_magick_image_add_noise"
 
+external magick_image_solarize : image -> threshold:float -> unit
+  = "caml_magick_image_solarize"
+
 (* enhance *)
 
 external magick_image_modulate : image -> modulate:string -> unit
@@ -569,6 +572,10 @@ module Magick = struct
 
   let image_equalize img =
     Magick.magick_image_equalize img;
+    ()
+
+  let image_solarize img ~threshold =
+    Magick.magick_image_solarize img threshold;
     ()
 
   let image_composite img1 comp_op img2 x y =

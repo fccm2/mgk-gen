@@ -1047,6 +1047,31 @@ caml_magick_image_equalize(
   CAMLreturn(Val_unit);
 }
 
+/* SolarizeImage() */
+
+CAMLprim value
+caml_magick_image_solarize(
+    value caml_image, value threshold)
+{
+  CAMLparam2(caml_image, threshold);
+
+  Image *image = Img_val(caml_image);
+  MagickBooleanType ret;
+
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
+  ret = SolarizeImage(image, Double_val(threshold));
+
+  if (ret == MagickFalse)
+  {
+    caml_failwith("Error solarize image");
+  }
+
+  CAMLreturn(Val_unit);
+}
+
 /* EdgeImage() */
 
 CAMLprim value

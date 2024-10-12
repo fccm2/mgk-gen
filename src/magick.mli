@@ -109,6 +109,8 @@ type noise_type =
 
 val magick_image_add_noise : image -> noise_type -> exception_info -> image
 
+val magick_image_solarize : image -> threshold:float -> unit
+
 (** {4 enhance} *)
 
 val magick_image_modulate : image -> modulate:string -> unit
@@ -225,6 +227,7 @@ module Magick : sig
   val image_hue : image -> int -> unit
   val image_negate : image -> unit
   val image_equalize : image -> unit
+  val image_solarize : image -> threshold:float -> unit
   val image_add_noise : image -> noise_type -> image
 
   module Color: sig

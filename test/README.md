@@ -15,6 +15,7 @@ these examples, can be used to test if everything works as expected.
 - `test_13.ml`: example with 'edge', and 'negate' (high)
 - `test_14.ml`: equalize example (high)
 - `test_15.ml`: despeckle / `add_noise` (high)
+- `test_16.ml`: solarize example (high)
 
 (low): using the low-level interface  
 (high): using the high-level interface
