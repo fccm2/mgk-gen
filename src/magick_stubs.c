@@ -1036,6 +1036,10 @@ caml_magick_image_equalize(
 
   Image *image = Img_val(caml_image);
 
+  if (image == (Image *)NULL) {
+    caml_failwith("Image is NULL");
+  }
+
   MagickBooleanType ret;
   ret = EqualizeImage(image);
 
