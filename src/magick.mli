@@ -344,3 +344,10 @@ val magick_exception_info_description : exception_info -> string
 val magick_exception_info_severity : exception_info -> exception_type
 val exception_severity_string : exception_type -> string
 
+(** {4 links} *)
+
+(**
+  {{:https://imagemagick.org/script/magick-core.php}
+     magick-core documentation}
+*)
+
