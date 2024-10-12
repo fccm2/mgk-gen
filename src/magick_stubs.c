@@ -1009,7 +1009,7 @@ caml_magick_image_negate(
 
   Image *image = Img_val(caml_image);
 
-  MagickBooleanType param;
+  MagickBooleanType param = MagickFalse;
   MagickBooleanType ret;
 
   if (image == (Image *)NULL) {
