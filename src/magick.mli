@@ -250,6 +250,7 @@ module Magick : sig
     val draw_ellipse: int * int -> int * int -> t
     val draw_qbcurve: int * int -> int * int -> int * int -> t
     val draw_cbcurve: int * int -> int * int -> int * int -> int * int -> t
+    val draw_round_rectangle: int * int -> int * int -> int * int -> t
     val draw_polygon: (int * int) list -> t
     val draw_text: int * int -> string -> string
   end

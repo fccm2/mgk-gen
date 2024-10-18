@@ -626,6 +626,9 @@ module Magick = struct
       let ps = List.map (fun (x, y) -> Printf.sprintf "%d,%d" x y) ps in
       (Printf.sprintf "polygon %s" (String.concat " " ps))
 
+    let draw_round_rectangle (x, y) (w, h) (r1, r2) =
+      (Printf.sprintf "roundrectangle %d,%d %d,%d %d,%d" x y (x + w) (y + h) r1 r2)
+
     let draw_arc (cx, cy) (rx, ry) (a1, a2) =
       (Printf.sprintf "ellipse %d,%d %d,%d %d,%d" cx cy rx ry a1 a2)
 
