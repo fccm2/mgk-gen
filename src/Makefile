@@ -1,7 +1,7 @@
-# Makefile to compile the Magick-Interface!
-# authors: Monnier Florent (2024)
-# To the extent permitted by law, you can use, modify, and redistribute
-# this file.
+# Makefile to compile the "magick-interface"
+# authors: Monnier Florent (2024, 2026)
+# To the extent permitted by law, you can use, study, modify, and re-
+# distribute this file, w/ any spdx standardized license,
 
 MAGICK_CORE_CFLAGS = $(shell pkg-config --cflags MagickCore)
 MAGICK_CORE_CLIBS = $(shell pkg-config --libs MagickCore)
@@ -73,9 +73,17 @@ find_install:
 	  magick.cmxa         \
 	  #Eol
 
-doc:
-	mkdir -p doc
-	ocamldoc -d doc -html magick.mli
+man:
+	mkdir -p man
+	ocamldoc -d man -html magick.mli
 
 clean:
-	$(RM) *.[oa] *.cm[ioxa] *.cmx[as] *.so
+	$(RM) dllmagick_stubs.so
+	$(RM) libmagick_stubs.a
+	$(RM) magick_stubs.o
+	$(RM) magick.cmi
+	$(RM) magick.cmo
+	$(RM) magick.cmx
+	$(RM) magick.cma
+	$(RM) magick.cmxa
+

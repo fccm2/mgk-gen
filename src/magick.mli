@@ -63,19 +63,33 @@ val magick_image_write : image_info -> image -> unit
 
 type color = int * int * int * int
 
-val magick_image_new : image_info -> int -> int -> color -> image
+val magick_image_new : image_info -> int -> int -> color -> exception_info -> image
 
 (** {4 display} *)
 
-val magick_image_display : image_info -> image -> unit
+val magick_image_display : image_info -> image -> exception_info -> unit
 
 (** {4 effects} *)
 
 val magick_image_blur :
   image -> radius:float -> sigma:float -> exception_info -> image
 
+type pixel_interpolate_method =
+  | Undefined
+  | Average
+  | Average9
+  | Average16
+  | Background
+  | Bilinear
+  | Blend
+  | Catrom
+  | Integer
+  | Mesh
+  | Nearest
+  | Spline
+
 val magick_image_spread :
-  image -> radius:float -> exception_info -> image
+  image -> meth:pixel_interpolate_method -> radius:float -> exception_info -> image
 
 val magick_image_sharpen :
   image -> radius:float -> sigma:float -> exception_info -> image
@@ -107,18 +121,18 @@ type noise_type =
   | PoissonNoise
   | RandomNoise
 
-val magick_image_add_noise : image -> noise_type -> exception_info -> image
+val magick_image_add_noise : image -> noise:noise_type -> attenuate:float -> exception_info -> image
 
-val magick_image_solarize : image -> threshold:float -> unit
+val magick_image_solarize : image -> threshold:float -> exception_info -> unit
 
 (** {4 enhance} *)
 
-val magick_image_modulate : image -> modulate:string -> unit
+val magick_image_modulate : image -> modulate:string -> exception_info -> unit
 (** modulate:(brightness, saturation, hue), default is 100 *)
 
-val magick_image_negate : image -> unit
+val magick_image_negate : image -> exception_info -> unit
 
-val magick_image_equalize : image -> unit
+val magick_image_equalize : image -> exception_info -> unit
 
 (** {4 resize} *)
 
@@ -128,19 +142,20 @@ val magick_image_scale : image -> int * int -> exception_info -> image
 
 module ColorSpace : sig
   type t = Undefined | RGB | GRAY | Transparent | OHTA | Lab | XYZ | YCbCr
-    | YCC | YIQ | YPbPr | YUV | CMYK | SRGB | HSB | HSL | HWB | Rec601Luma
-    | Rec601YCbCr | Rec709Luma | Rec709YCbCr | Log | CMY | Luv | HCL | LCH
-    | LMS | LCHab | LCHuv | ScRGB | HSI | HSV | HCLp | YDbDr | XyY | LinearGRAY
+    | YCC | YIQ | YPbPr | YUV | CMYK | SRGB | HSB | HSL | HWB
+    | Rec601YCbCr | Rec709YCbCr | Log | CMY | Luv | HCL | LCH
+    | LMS | LCHab | LCHuv | ScRGB | HSI | HSV | HCLp | YDbDr | XyY
+    | LinearGRAY
 end
 
-val magick_image_colorspace_transform : image -> ColorSpace.t -> unit
+val magick_image_colorspace_transform : image -> ColorSpace.t -> exception_info -> unit
 
 (** {4 composite} *)
 
 module CompositeOp : sig
   type t = Undefined | No | ModulusAdd | Atop | Blend | Bumpmap | ChangeMask
     | Clear | ColorBurn | ColorDodge | Colorize | CopyBlack | CopyBlue | Copy
-    | CopyCyan | CopyGreen | CopyMagenta | CopyOpacity | CopyRed | CopyYellow
+    | CopyCyan | CopyGreen | CopyMagenta | CopyRed | CopyYellow
     | Darken | DstAtop | Dst | DstIn | DstOut | DstOver | Difference | Displace
     | Dissolve | Exclusion | HardLight | Hue | In | Lighten | LinearLight
     | Luminize | MinusDst | Modulate | Multiply | Out | Over | Overlay | Plus
@@ -154,7 +169,7 @@ module CompositeOp : sig
   val to_string : t -> string
 end
 
-val magick_image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
+val magick_image_composite : image -> image -> CompositeOp.t -> int * int -> exception_info -> unit
 
 (** {4 draw-info} *)
 
@@ -211,7 +226,7 @@ module Magick : sig
   val image_write : image -> filename:string -> unit
   val image_charcoal : image -> radius:float -> sigma:float -> image
   val image_blur : image -> radius:float -> sigma:float -> image
-  val image_spread : image -> radius:float -> image
+  val image_spread : image -> meth:pixel_interpolate_method -> radius:float -> image
   val image_sharpen : image -> radius:float -> sigma:float -> image
   val image_shade : image -> gray:bool -> azimuth:float -> elevation:float -> image
   val image_edge : image -> radius:float -> image
@@ -219,7 +234,7 @@ module Magick : sig
   val image_emboss : image -> radius:float -> sigma:float -> image
   val image_colorspace_transform : image -> ColorSpace.t -> unit
   val image_scale : image -> size:int * int -> image
-  val image_composite : image -> CompositeOp.t -> image -> int -> int -> unit
+  val image_composite : image -> image -> CompositeOp.t -> int * int -> unit
   val image_modulate : image -> modulate:(int * int * int) -> unit
   (* modulates: *)
   val image_brightness : image -> int -> unit
@@ -228,7 +243,7 @@ module Magick : sig
   val image_negate : image -> unit
   val image_equalize : image -> unit
   val image_solarize : image -> threshold:float -> unit
-  val image_add_noise : image -> noise_type -> image
+  val image_add_noise : image -> noise_type -> float -> image
 
   module Color: sig
     type t = color

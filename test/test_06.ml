@@ -5,6 +5,6 @@ let () =
   let img2 = Magick.image_charcoal img1 ~radius:1.6 ~sigma:1.2 in
 
   (* Multiply *)
-  Magick.image_composite img1 CompositeOp.Lighten img2 0 0;
+  Magick.image_composite img1 img2 CompositeOp.Lighten (0, 0);
   Magick.image_display img1;
 ;;

@@ -20,7 +20,7 @@ let () =
 
     Magick.magick_image_draw img d;
  
-    Magick.magick_image_display nf img;
+    Magick.magick_image_display nf img e;
     Magick.magick_image_destroy img;
   end;
 

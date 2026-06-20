@@ -1,3 +1,4 @@
+ext/ImageMagick-*
 *.o
 *.a
 *.cmi

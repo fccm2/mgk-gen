@@ -1,0 +1,24 @@
+### ImageMagick-7.1.1-47/
+
+```
+$ du -h ImageMagick-7.1.1-47/
+66M
+```
+
+```
+$ ls -l 7.1.1-47.tar.gz
+15M
+```
+
+```
+$ sudo apt-get install libmagickcore-dev
+```
+
+```
+$ make -f dep.mk clean
+```
+
+```
+$ make -f dep.mk
+```
+

@@ -4,7 +4,7 @@ test:
 	$(MAKE) -C test
 clean:
 	$(MAKE) -C src clean
-doc:
-	$(MAKE) -C src doc
+man:
+	$(MAKE) -C src man
 opt:
 	$(MAKE) -C src opt

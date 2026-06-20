@@ -9,13 +9,13 @@ let () =
   begin
     let img = Magick.magick_image_read nf e in
 
-    let img1 = Magick.magick_image_spread img ~radius:5.2 e in
+    let img1 = Magick.magick_image_spread img ~meth:Magick.Nearest ~radius:5.2 e in
     let img2 = Magick.magick_image_sharpen img ~radius:4.1 ~sigma:3.2 e in
     let img3 = Magick.magick_image_shade img ~gray:true ~azimuth:3.0 ~elevation:2.8 e in
  
-    Magick.magick_image_display nf img1;
-    Magick.magick_image_display nf img2;
-    Magick.magick_image_display nf img3;
+    Magick.magick_image_display nf img1 e;
+    Magick.magick_image_display nf img2 e;
+    Magick.magick_image_display nf img3 e;
 
     Magick.magick_image_destroy img3;
     Magick.magick_image_destroy img2;

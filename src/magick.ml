@@ -95,12 +95,12 @@ external magick_image_write : image_info -> image -> unit
 
 type color = int * int * int * int
 
-external magick_image_new : image_info -> int -> int -> color -> image
+external magick_image_new : image_info -> int -> int -> color -> exception_info -> image
   = "caml_magick_image_create"
 
 (* display *)
 
-external magick_image_display : image_info -> image -> unit
+external magick_image_display : image_info -> image -> exception_info -> unit
   = "caml_magick_image_display"
 
 (* exception-info *)
@@ -257,7 +257,21 @@ let exception_severity_string = function
 external magick_image_blur : image -> radius:float -> sigma:float -> exception_info -> image
   = "caml_magick_image_blur"
 
-external magick_image_spread : image -> radius:float -> exception_info -> image
+type pixel_interpolate_method =
+  | Undefined
+  | Average
+  | Average9
+  | Average16
+  | Background
+  | Bilinear
+  | Blend
+  | Catrom
+  | Integer
+  | Mesh
+  | Nearest
+  | Spline
+
+external magick_image_spread : image -> meth:pixel_interpolate_method -> radius:float -> exception_info -> image
   = "caml_magick_image_spread"
 
 external magick_image_sharpen : image -> radius:float -> sigma:float -> exception_info -> image
@@ -290,21 +304,21 @@ type noise_type =
   | PoissonNoise
   | RandomNoise
 
-external magick_image_add_noise : image -> noise_type -> exception_info -> image
+external magick_image_add_noise : image -> noise:noise_type -> attenuate:float -> exception_info -> image
   = "caml_magick_image_add_noise"
 
-external magick_image_solarize : image -> threshold:float -> unit
+external magick_image_solarize : image -> threshold:float -> exception_info -> unit
   = "caml_magick_image_solarize"
 
 (* enhance *)
 
-external magick_image_modulate : image -> modulate:string -> unit
+external magick_image_modulate : image -> modulate:string -> exception_info -> unit
   = "caml_magick_image_modulate"
 
-external magick_image_negate : image -> unit
+external magick_image_negate : image -> exception_info -> unit
   = "caml_magick_image_negate"
 
-external magick_image_equalize : image -> unit
+external magick_image_equalize : image -> exception_info -> unit
   = "caml_magick_image_equalize"
 
 (* resize *)
@@ -316,18 +330,19 @@ external magick_image_scale : image -> int * int -> exception_info -> image
 
 module ColorSpace = struct
   type t = Undefined | RGB | GRAY | Transparent | OHTA | Lab | XYZ | YCbCr
-    | YCC | YIQ | YPbPr | YUV | CMYK | SRGB | HSB | HSL | HWB | Rec601Luma
-    | Rec601YCbCr | Rec709Luma | Rec709YCbCr | Log | CMY | Luv | HCL | LCH
-    | LMS | LCHab | LCHuv | ScRGB | HSI | HSV | HCLp | YDbDr | XyY | LinearGRAY
+    | YCC | YIQ | YPbPr | YUV | CMYK | SRGB | HSB | HSL | HWB
+    | Rec601YCbCr | Rec709YCbCr | Log | CMY | Luv | HCL | LCH
+    | LMS | LCHab | LCHuv | ScRGB | HSI | HSV | HCLp | YDbDr | XyY
+    | LinearGRAY
 end
 
-external magick_image_colorspace_transform: image -> ColorSpace.t -> unit
+external magick_image_colorspace_transform: image -> ColorSpace.t -> exception_info -> unit
   = "caml_magick_image_colorspace_transform"
 
 module CompositeOp = struct
   type t = Undefined | No | ModulusAdd | Atop | Blend | Bumpmap | ChangeMask
     | Clear | ColorBurn | ColorDodge | Colorize | CopyBlack | CopyBlue | Copy
-    | CopyCyan | CopyGreen | CopyMagenta | CopyOpacity | CopyRed | CopyYellow
+    | CopyCyan | CopyGreen | CopyMagenta | CopyRed | CopyYellow
     | Darken | DstAtop | Dst | DstIn | DstOut | DstOver | Difference | Displace
     | Dissolve | Exclusion | HardLight | Hue | In | Lighten | LinearLight
     | Luminize | MinusDst | Modulate | Multiply | Out | Over | Overlay | Plus
@@ -345,7 +360,7 @@ module CompositeOp = struct
     | "colordodge" -> ColorDodge | "colorize" -> Colorize
     | "copyblack" -> CopyBlack | "copyblue" -> CopyBlue | "copy" -> Copy
     | "copycyan" -> CopyCyan | "copygreen" -> CopyGreen
-    | "copymagenta" -> CopyMagenta | "copyopacity" -> CopyOpacity
+    | "copymagenta" -> CopyMagenta
     | "copyred" -> CopyRed | "copyyellow" -> CopyYellow | "darken" -> Darken
     | "dstatop" -> DstAtop | "dst" -> Dst | "dstin" -> DstIn | "dstout" -> DstOut
     | "dstover" -> DstOver | "difference" -> Difference
@@ -376,7 +391,7 @@ module CompositeOp = struct
     | ColorDodge -> "ColorDodge" | Colorize -> "Colorize"
     | CopyBlack -> "CopyBlack" | CopyBlue -> "CopyBlue" | Copy -> "Copy"
     | CopyCyan -> "CopyCyan" | CopyGreen -> "CopyGreen"
-    | CopyMagenta -> "CopyMagenta" | CopyOpacity -> "CopyOpacity"
+    | CopyMagenta -> "CopyMagenta"
     | CopyRed -> "CopyRed" | CopyYellow -> "CopyYellow" | Darken -> "Darken"
     | DstAtop -> "DstAtop" | Dst  -> "Dst" | DstIn -> "DstIn"
     | DstOut -> "DstOut" | DstOver -> "DstOver" | Difference -> "Difference"
@@ -401,7 +416,7 @@ module CompositeOp = struct
 end
 
 external magick_image_composite:
-  image -> CompositeOp.t -> image -> int -> int -> unit = "caml_magick_image_composite"
+  image -> image -> CompositeOp.t -> int * int -> exception_info -> unit = "caml_magick_image_composite"
 
 (* draw-info *)
 
@@ -453,16 +468,20 @@ module Magick = struct
     (img)
 
   let new_image w h color =
+    let e = Magick._magick_exception_info_acquire () in
     let nf = Magick._magick_image_info_clone () in
-    let img = Magick.magick_image_new nf w h color in
+    let img = Magick.magick_image_new nf w h color e in
     Magick._magick_image_info_destroy nf;
+    Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img;
     (img)
 
   let image_display img =
+    let e = Magick._magick_exception_info_acquire () in
     let nf = Magick._magick_image_info_clone () in
-    Magick.magick_image_display nf img;
+    Magick.magick_image_display nf img e;
     Magick._magick_image_info_destroy nf;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_write img ~filename =
@@ -486,9 +505,9 @@ module Magick = struct
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
 
-  let image_spread img ~radius =
+  let image_spread img ~meth ~radius =
     let e = Magick._magick_exception_info_acquire () in
-    let img2 = Magick.magick_image_spread img ~radius e in
+    let img2 = Magick.magick_image_spread img ~meth ~radius e in
     Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
@@ -528,9 +547,9 @@ module Magick = struct
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
 
-  let image_add_noise img noise_type =
+  let image_add_noise img noise_type attenuate =
     let e = Magick._magick_exception_info_acquire () in
-    let img2 = Magick.magick_image_add_noise img noise_type e in
+    let img2 = Magick.magick_image_add_noise img ~noise:noise_type ~attenuate e in
     Magick._magick_exception_info_destroy e;
     Gc.finalise Magick.magick_image_destroy img2;
     (img2)
@@ -543,43 +562,62 @@ module Magick = struct
     (img2)
 
   let image_colorspace_transform img color_space =
-    Magick.magick_image_colorspace_transform img color_space;
+    let e = Magick._magick_exception_info_acquire () in
+    Magick.magick_image_colorspace_transform img color_space e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_modulate img ~modulate:(brightness, saturation, hue) =
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_image_modulate img ~modulate:(
-      Printf.sprintf "%d,%d,%d" brightness saturation hue);
+      Printf.sprintf "%d,%d,%d" brightness saturation hue) e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_brightness img brightness =
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_image_modulate img ~modulate:(
-      Printf.sprintf "%d,100,100" brightness);
+      Printf.sprintf "%d,100,100" brightness) e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_saturation img saturation =
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_image_modulate img ~modulate:(
-      Printf.sprintf "100,%d,100" saturation);
+      Printf.sprintf "100,%d,100" saturation) e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_hue img hue =
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_image_modulate img ~modulate:(
-      Printf.sprintf "100,100,%d" hue);
+      Printf.sprintf "100,100,%d" hue) e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_negate img =
-    Magick.magick_image_negate img;
+    let e = Magick._magick_exception_info_acquire () in
+    Magick.magick_image_negate img e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_equalize img =
-    Magick.magick_image_equalize img;
+    let e = Magick._magick_exception_info_acquire () in
+    Magick.magick_image_equalize img e;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_solarize img ~threshold =
-    Magick.magick_image_solarize img threshold;
+    let e = Magick._magick_exception_info_acquire () in
+    Magick.magick_image_solarize img ~threshold e;
+    Magick._magick_exception_info_destroy e;
     ()
 
-  let image_composite img1 comp_op img2 x y =
-    Magick.magick_image_composite img1 comp_op img2 x y
+  let image_composite img1 img2 comp_op (x, y) =
+    let e = Magick._magick_exception_info_acquire () in
+    Magick.magick_image_composite img1 img2 comp_op (x, y) e;
+    Magick._magick_exception_info_destroy e;
+    ()
 
   (* draw *)
 

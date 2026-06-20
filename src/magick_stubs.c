@@ -1,28 +1,19 @@
-/* Stub-file for the magick-core library
- * Authors: Monnier Florent (2024)
- * To the extent permitted by law, you can use, modify, and redistribute
- * this file.
+/* Stub-file for the `magick-core` library,
+ * Authors: Monnier Florent (2024, 2026)
+ * To the extent permitted by law, you can use, study, modify, and re-
+ * distribute this file, w/ any spdx standardized license,
  */
 
-#ifndef MAGICK_LIB_VERSION
-#define MAGICK_LIB_VERSION 6
-#endif
+/* In order to compile w/ a previous (MAGICK_LIB_VERSION == 6)
+ * Please take a earlier version of the bindings,
+ */
 
-
-#if MAGICK_LIB_VERSION == 6
-
-/* IM-6 */
-#include <magick/MagickCore.h>
-
-#endif
-
-#if MAGICK_LIB_VERSION == 7
+/* This version of the interface is made to compile with a
+ * (MAGICK_LIB_VERSION == 7)
+ */
 
 /* IM-7 */
 #include <MagickCore/MagickCore.h>
-
-#endif
-
 
 #include <caml/mlvalues.h>
 #include <caml/alloc.h>
@@ -116,7 +107,6 @@ static const CompositeOperator composite_op_table[] = {
   CopyCyanCompositeOp,
   CopyGreenCompositeOp,
   CopyMagentaCompositeOp,
-  CopyOpacityCompositeOp,
   CopyRedCompositeOp,
   CopyYellowCompositeOp,
   DarkenCompositeOp,
@@ -585,33 +575,84 @@ caml_magick_image_create(
     value caml_imginfo,
     value caml_width,
     value caml_height,
-    value caml_color)
+    value caml_color,
+    value caml_exninfo)
 {
-  CAMLparam4(caml_imginfo, caml_width, caml_height, caml_color);
+  CAMLparam5(caml_imginfo, caml_width, caml_height, caml_color, caml_exninfo);
   CAMLlocal1(caml_image);
 
   ImageInfo *image_info = Imginfo_val(caml_imginfo);
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
   Image *image;
 
   if (image_info == (ImageInfo *)NULL) {
-    caml_failwith("ImageInfo is NULL");
+    caml_failwith("image_create: image_info-is-null");
   }
 
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("image_create: exception_info-is-null");
+  }
+
+  /*
   MagickPixelPacket pixel_packet;
 
   pixel_packet.red     = Long_val(Field(caml_color, 0));
   pixel_packet.green   = Long_val(Field(caml_color, 1));
   pixel_packet.blue    = Long_val(Field(caml_color, 2));
   pixel_packet.opacity = Long_val(Field(caml_color, 3));
+  */
+
+  size_t width = Long_val(caml_width);
+  size_t height = Long_val(caml_height);
+
+  PixelInfo background;
+
+  background.red   = Long_val(Field(caml_color, 0));
+  background.green = Long_val(Field(caml_color, 1));
+  background.blue  = Long_val(Field(caml_color, 2));
+  background.alpha = Long_val(Field(caml_color, 3));
+
+  //background.storage_class = DirectClass;
+  //background.storage_class = PseudoClass;
+
+  background.colorspace = RGBColorspace;
+
+  /*
+
+  ColorspaceType
+    colorspace;
+
+  PixelTrait
+    alpha_trait;
+
+  double
+    fuzz;
+
+  size_t
+    depth;
+
+  MagickSizeType
+    count;
+
+  */
 
   image =
     NewMagickImage(image_info,
-        Long_val(caml_width),
-        Long_val(caml_height), &pixel_packet);
+        width, height, &background, exception);
+
+  /*
+  Image *NewMagickImage(
+    const ImageInfo *image_info,
+    const size_t width,
+    const size_t height,
+    const PixelInfo *background,
+    ExceptionInfo *exception)
+  */
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("image_create: returned-image-is-null");
   }
 
   caml_image = Val_img(image);
@@ -624,24 +665,31 @@ caml_magick_image_create(
 CAMLprim value
 caml_magick_image_write(
     value caml_imginfo,
-    value caml_image)
+    value caml_image,
+    value caml_exninfo)
 {
-  CAMLparam2(caml_imginfo, caml_image);
+  CAMLparam3(caml_imginfo, caml_image, caml_exninfo);
 
   ImageInfo *image_info = Imginfo_val(caml_imginfo);
 
   Image *image = Img_val(caml_image);
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
   if (image_info == (ImageInfo *)NULL) {
-    caml_failwith("ImageInfo is NULL");
+    caml_failwith("image_write: image_info-is-null");
   }
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("image_write: image-is-null");
   }
 
-  if (!WriteImage(image_info, image)) {
-    caml_failwith("Error writing image");
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("image_write: exception_info-is-null");
+  }
+
+  if (!WriteImage(image_info, image, exception)) {
+    caml_failwith("image_write: error writing image");
   }
 
   CAMLreturn(Val_unit);
@@ -663,25 +711,25 @@ caml_magick_image_blur(
   Image *blurred_image;
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("image_blur: image-is-null");
   }
 
   if (exception == (ExceptionInfo *)NULL) {
-    caml_failwith("ExceptionInfo is NULL");
+    caml_failwith("image_blur: exception_info-is-null");
   }
 
   blurred_image = BlurImage(image, Double_val(radius), Double_val(sigma), exception);
 
   if (!blurred_image) {
-    caml_failwith("Error image blur");
+    caml_failwith("image_blur: error image blur");
   }
-
-  caml_blurred_image = Val_img(blurred_image);
 
   if (exception->severity != UndefinedException)
   {
-    caml_failwith("Error while bluring image");
+    caml_failwith("image_blur: exception while bluring image");
   }
+
+  caml_blurred_image = Val_img(blurred_image);
 
   CAMLreturn(caml_blurred_image);
 }
@@ -740,10 +788,12 @@ static const NoiseType noise_type_table[] = {
 
 CAMLprim value
 caml_magick_image_add_noise(
-    value caml_image, value caml_noise_type,
+    value caml_image,
+    value caml_noise_type,
+    value caml_attenuate,
     value caml_exninfo)
 {
-  CAMLparam3(caml_image, caml_noise_type, caml_exninfo);
+  CAMLparam4(caml_image, caml_noise_type, caml_attenuate, caml_exninfo);
   CAMLlocal1(caml_image_2);
 
   ExceptionInfo *exception = Exninfo_val(caml_exninfo);
@@ -761,8 +811,9 @@ caml_magick_image_add_noise(
   }
 
   noise_type = noise_type_table[Long_val(caml_noise_type)];
+  double attenuate = Double_val(caml_attenuate);
 
-  image_2 = AddNoiseImage(image, noise_type, exception);
+  image_2 = AddNoiseImage(image, noise_type, attenuate, exception);
 
   if (image_2 == (Image *)NULL) {
     caml_failwith("Error add_noise image");
@@ -857,20 +908,41 @@ caml_magick_image_sharpen(
   CAMLreturn(caml_image_2);
 }
 
+/* PixelInterpolateMethod[] */
+
+static const PixelInterpolateMethod pixel_interpolate_method_table[] = {
+  UndefinedInterpolatePixel,
+  AverageInterpolatePixel,
+  Average9InterpolatePixel,
+  Average16InterpolatePixel,
+  BackgroundInterpolatePixel,
+  BilinearInterpolatePixel,
+  BlendInterpolatePixel,
+  CatromInterpolatePixel,
+  IntegerInterpolatePixel,
+  MeshInterpolatePixel,
+  NearestInterpolatePixel,
+  SplineInterpolatePixel
+};
+
 /* SpreadImage() */
 
 CAMLprim value
 caml_magick_image_spread(
-    value caml_image, value radius,
+    value caml_image, value caml_method, value radius,
     value caml_exninfo)
 {
-  CAMLparam3(caml_image, caml_exninfo, radius);
+  CAMLparam4(caml_image, caml_method, radius, caml_exninfo);
   CAMLlocal1(caml_image_2);
 
   ExceptionInfo *exception = Exninfo_val(caml_exninfo);
 
   Image *image = Img_val(caml_image);
   Image *image_2;
+
+  PixelInterpolateMethod method;
+
+  method = pixel_interpolate_method_table[Long_val(caml_method)];
 
   if (image == (Image *)NULL) {
     caml_failwith("Image is NULL");
@@ -880,15 +952,15 @@ caml_magick_image_spread(
     caml_failwith("ExceptionInfo is NULL");
   }
 
-  image_2 = SpreadImage(image, Double_val(radius), exception);
+  image_2 = SpreadImage(image, method, Double_val(radius), exception);
 
   if (!image_2) {
-    caml_failwith("Error image spread");
+    caml_failwith("error-image-spread");
   }
 
   if (exception->severity != UndefinedException)
   {
-    caml_failwith("Error image spread");
+    caml_failwith("error-image-spread");
   }
 
   caml_image_2 = Val_img(image_2);
@@ -978,22 +1050,28 @@ caml_magick_image_despeckle(
 
 CAMLprim value
 caml_magick_image_modulate(
-    value caml_image, value modulate)
+    value caml_image, value modulate, value caml_exninfo)
 {
-  CAMLparam2(caml_image, modulate);
+  CAMLparam3(caml_image, modulate, caml_exninfo);
 
   Image *image = Img_val(caml_image);
   MagickBooleanType ret;
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("modulate: image-is-null");
   }
 
-  ret = ModulateImage(image, String_val(modulate));
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("modulate: exception_info-is-null");
+  }
+
+  ret = ModulateImage(image, String_val(modulate), exception);
 
   if (ret == MagickFalse)
   {
-    caml_failwith("Error image modulate");
+    caml_failwith("error-image-modulate");
   }
 
   CAMLreturn(Val_unit);
@@ -1003,9 +1081,9 @@ caml_magick_image_modulate(
 
 CAMLprim value
 caml_magick_image_negate(
-    value caml_image)
+    value caml_image, value caml_exninfo)
 {
-  CAMLparam1(caml_image);
+  CAMLparam2(caml_image, caml_exninfo);
 
   Image *image = Img_val(caml_image);
 
@@ -1013,14 +1091,20 @@ caml_magick_image_negate(
   MagickBooleanType ret;
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("negate: image-is-null");
   }
 
-  ret = NegateImage(image, param);
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("negate: exception_info (is-null)");
+  }
+
+  ret = NegateImage(image, param, exception);
 
   if (ret == MagickFalse)
   {
-    caml_failwith("Error image negate");
+    caml_failwith("negate-image-error");
   }
 
   CAMLreturn(Val_unit);
@@ -1030,9 +1114,9 @@ caml_magick_image_negate(
 
 CAMLprim value
 caml_magick_image_equalize(
-    value caml_image)
+    value caml_image, value caml_exninfo)
 {
-  CAMLparam1(caml_image);
+  CAMLparam2(caml_image, caml_exninfo);
 
   Image *image = Img_val(caml_image);
 
@@ -1040,8 +1124,15 @@ caml_magick_image_equalize(
     caml_failwith("Image is NULL");
   }
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("equalize: exception_info (is-null)");
+  }
+
   MagickBooleanType ret;
-  ret = EqualizeImage(image);
+
+  ret = EqualizeImage(image, exception);
 
   if (ret == MagickFalse)
   {
@@ -1055,22 +1146,28 @@ caml_magick_image_equalize(
 
 CAMLprim value
 caml_magick_image_solarize(
-    value caml_image, value threshold)
+    value caml_image, value threshold, value caml_exninfo)
 {
-  CAMLparam2(caml_image, threshold);
+  CAMLparam3(caml_image, threshold, caml_exninfo);
 
   Image *image = Img_val(caml_image);
   MagickBooleanType ret;
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("solarize: image-is-null");
   }
 
-  ret = SolarizeImage(image, Double_val(threshold));
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("solarize: exception_info (is-null)");
+  }
+
+  ret = SolarizeImage(image, Double_val(threshold), exception);
 
   if (ret == MagickFalse)
   {
-    caml_failwith("Error solarize image");
+    caml_failwith("error-solarize-image");
   }
 
   CAMLreturn(Val_unit);
@@ -1142,22 +1239,29 @@ caml_magick_image_scale(
 CAMLprim value
 caml_magick_image_display(
     value caml_imginfo,
-    value caml_image)
+    value caml_image,
+    value caml_exninfo)
 {
-  CAMLparam2(caml_imginfo, caml_image);
+  CAMLparam3(caml_imginfo, caml_image, caml_exninfo);
 
   ImageInfo *image_info = Imginfo_val(caml_imginfo);
-  Image *image = Img_val(caml_image);
+  Image *images = Img_val(caml_image);
 
   if (image_info == (ImageInfo *)NULL) {
-    caml_failwith("ImageInfo is NULL");
+    caml_failwith("display: image_info (is-null)");
   }
 
-  if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+  if (images == (Image *)NULL) {
+    caml_failwith("display: images-eq-null");
   }
 
-  MagickBooleanType ret = DisplayImages(image_info, image);
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("display: exception_info (is-null)");
+  }
+
+  MagickBooleanType ret = DisplayImages(image_info, images, exception);
 
   CAMLreturn((ret == MagickTrue ? Val_true : Val_false));
 }
@@ -1182,9 +1286,7 @@ static const ColorspaceType colorspace_table[] = {
   HSBColorspace,
   HSLColorspace,
   HWBColorspace,
-  Rec601LumaColorspace,
   Rec601YCbCrColorspace,
-  Rec709LumaColorspace,
   Rec709YCbCrColorspace,
   LogColorspace,
   CMYColorspace,
@@ -1204,21 +1306,28 @@ static const ColorspaceType colorspace_table[] = {
 };
 
 CAMLprim value
-caml_magick_image_colorspace_transform(value caml_image, value caml_colorspace)
+caml_magick_image_colorspace_transform(value caml_image, value caml_colorspace, value caml_exninfo)
 {
-  CAMLparam2(caml_image, caml_colorspace);
+  CAMLparam3(caml_image, caml_colorspace, caml_exninfo);
 
   ColorspaceType colorspace_type = colorspace_table[Long_val(caml_colorspace)];
 
   Image *image = Img_val(caml_image);
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("colorspace_transform: image-is-null");
+  }
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("colorspace_transform: exception_info-is-null");
   }
 
   /* convert image colorspace */
-  if (!TransformImageColorspace(image, colorspace_type)) {
-    caml_failwith("Error converting image colorspace");
+
+  if (!TransformImageColorspace(image, colorspace_type, exception)) {
+    caml_failwith("colorspace_transform: error converting image colorspace");
   }
 
   CAMLreturn(Val_unit);
@@ -1229,10 +1338,12 @@ caml_magick_image_colorspace_transform(value caml_image, value caml_colorspace)
 CAMLprim value
 caml_magick_image_composite(
     value caml_image1,
+    value caml_image2,
     value caml_composite_op,
-    value caml_image2, value x, value y)
+    value caml_xy_offset,
+    value caml_exninfo)
 {
-  CAMLparam5(caml_image1, caml_composite_op, caml_image2, x, y);
+  CAMLparam5(caml_image1, caml_composite_op, caml_image2, caml_xy_offset, caml_exninfo);
 
   CompositeOperator composite_op = Compositeop_val(caml_composite_op);
 
@@ -1240,18 +1351,33 @@ caml_magick_image_composite(
   Image *image2 = Img_val(caml_image2);
 
   if (image1 == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("composite: image-1 (is-null)");
   }
 
   if (image2 == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("composite: image-2 (is-null)");
   }
 
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("composite: exception_info (is-null)");
+  }
+
+  value caml_x_offset = Field(caml_xy_offset, 0);
+  value caml_y_offset = Field(caml_xy_offset, 1);
+
+  ssize_t x_offset = Long_val(caml_x_offset);
+  ssize_t y_offset = Long_val(caml_y_offset);
+
+  MagickBooleanType clip_to_self = MagickTrue;
+
   MagickBooleanType status =
-    CompositeImage(image1, composite_op, image2, Long_val(x), Long_val(y));
+    CompositeImage(image1, image2, composite_op,
+      clip_to_self, x_offset, y_offset, exception);
 
   if (status == MagickFalse) {
-    caml_failwith("Error Compositing images");
+    caml_failwith("composite: error-compositing-images");
   }
 
   CAMLreturn(Val_unit);
@@ -1308,7 +1434,7 @@ caml_magick_draw_info_set_fill(
   draw_info->fill.red     = Long_val(Field(caml_color, 0));
   draw_info->fill.green   = Long_val(Field(caml_color, 1));
   draw_info->fill.blue    = Long_val(Field(caml_color, 2));
-  draw_info->fill.opacity = Long_val(Field(caml_color, 3));
+  draw_info->fill.alpha   = Long_val(Field(caml_color, 3));
 
   CAMLreturn(Val_unit);
 }
@@ -1329,7 +1455,7 @@ caml_magick_draw_info_set_stroke(
   draw_info->stroke.red     = Long_val(Field(caml_color, 0));
   draw_info->stroke.green   = Long_val(Field(caml_color, 1));
   draw_info->stroke.blue    = Long_val(Field(caml_color, 2));
-  draw_info->stroke.opacity = Long_val(Field(caml_color, 3));
+  draw_info->stroke.alpha   = Long_val(Field(caml_color, 3));
 
   CAMLreturn(Val_unit);
 }
@@ -1435,9 +1561,10 @@ caml_magick_draw_info_set_pointsize(
 CAMLprim value
 caml_magick_image_draw(
     value caml_image,
-    value caml_draw_info)
+    value caml_draw_info,
+    value caml_exninfo)
 {
-  CAMLparam2(caml_image, caml_draw_info);
+  CAMLparam3(caml_image, caml_draw_info, caml_exninfo);
 
   DrawInfo *draw_info = Drawinfo_val(caml_draw_info);
 
@@ -1451,7 +1578,13 @@ caml_magick_image_draw(
     caml_failwith("Image is NULL");
   }
 
-  MagickBooleanType status = DrawImage(image, draw_info);
+  ExceptionInfo *exception = Exninfo_val(caml_exninfo);
+
+  if (exception == (ExceptionInfo *)NULL) {
+    caml_failwith("ExceptionInfo is NULL");
+  }
+
+  MagickBooleanType status = DrawImage(image, draw_info, exception);
 
   if (status == MagickFalse) {
     caml_failwith("Error Drawing image");
