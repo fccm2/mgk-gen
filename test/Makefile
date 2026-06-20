@@ -42,6 +42,7 @@ rose.png:
 	convert rose: $@
 clean:
 	$(RM) rose.png
+	$(RM) rose-2.png
 	$(RM) test_01.opt test_01.o test_01.cmi test_01.cmx
 	$(RM) test_02.opt test_02.o test_02.cmi test_02.cmx
 	$(RM) test_03.opt test_03.o test_03.cmi test_03.cmx

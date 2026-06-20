@@ -1,5 +1,5 @@
 (* Interface-file for a magick-core lib.
- * Authors: Monnier Florent (2024, 2026)
+ * Authors: Monnier Florent (2024, 2026, )
  * To the extent permitted by law, you can use, study, modify, and re-
  * distribute this file, w/ any spdx standardized license,
  *)
@@ -88,7 +88,7 @@ external magick_image_set_filename : image -> string -> unit
 external magick_image_read : image_info -> exception_info -> image
   = "caml_magick_image_read"
 
-external magick_image_write : image_info -> image -> unit
+external magick_image_write : image_info -> image -> exception_info -> unit
   = "caml_magick_image_write"
 
 (* create *)
@@ -174,6 +174,8 @@ type exception_type =
   | ConfigureFatalError
   | PolicyFatalError
 
+  | UnknownException
+
 external magick_exception_info_reason : exception_info -> string
   = "caml_magick_exception_info_reason"
 
@@ -251,6 +253,11 @@ let exception_severity_string = function
   | RegistryFatalError          -> "RegistryFatalError"
   | ConfigureFatalError         -> "ConfigureFatalError"
   | PolicyFatalError            -> "PolicyFatalError"
+
+  | UnknownException            -> "UnknownException"
+
+let magick_exception_info_severity_string excn_info =
+  exception_severity_string (magick_exception_info_severity excn_info)
 
 (* effects *)
 
@@ -436,7 +443,7 @@ external magick_draw_info_set_compose: draw_info -> CompositeOp.t -> unit = "cam
 external magick_draw_info_set_font: draw_info -> string -> unit = "caml_magick_draw_info_set_font"
 external magick_draw_info_set_pointsize: draw_info -> float -> unit = "caml_magick_draw_info_set_pointsize"
 
-external magick_image_draw: image -> draw_info -> unit = "caml_magick_image_draw"
+external magick_image_draw: image -> draw_info -> exception_info -> unit = "caml_magick_image_draw"
 
 (* quantum *)
 
@@ -485,10 +492,12 @@ module Magick = struct
     ()
 
   let image_write img ~filename =
+    let e = Magick._magick_exception_info_acquire () in
     let nf = Magick._magick_image_info_clone () in
     Magick.magick_image_set_filename img filename;
-    Magick.magick_image_write nf img;
+    Magick.magick_image_write nf img e;
     Magick._magick_image_info_destroy nf;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let image_charcoal img ~radius ~sigma =
@@ -674,14 +683,17 @@ module Magick = struct
       (Printf.sprintf "text %d,%d '%s'" x y s)
   end
 
+
   let fill_primitive img ~prim:p ?fill () =
     let d = Magick.magick_draw_info_acquire () in
     begin match fill with None -> ()
     | Some c -> Magick.magick_draw_info_set_fill d c
     end;
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_draw_info_set_primitive d p;
-    Magick.magick_image_draw img d;
+    Magick.magick_image_draw img d e;
     Magick.magick_draw_info_destroy d;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let stroke_primitive img ~prim:p ?stroke ?stroke_width () =
@@ -692,9 +704,11 @@ module Magick = struct
     begin match stroke with None -> ()
     | Some c -> Magick.magick_draw_info_set_stroke d c
     end;
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_draw_info_set_primitive d p;
-    Magick.magick_image_draw img d;
+    Magick.magick_image_draw img d e;
     Magick.magick_draw_info_destroy d;
+    Magick._magick_exception_info_destroy e;
     ()
 
   let draw_text img ~pos ~s ?font ?pointsize ?fill ?stroke ?stroke_width () =
@@ -714,9 +728,11 @@ module Magick = struct
     begin match pointsize with None -> ()
     | Some p -> Magick.magick_draw_info_set_pointsize d p
     end;
+    let e = Magick._magick_exception_info_acquire () in
     Magick.magick_draw_info_set_primitive d (Prim.draw_text pos s);
-    Magick.magick_image_draw img d;
+    Magick.magick_image_draw img d e;
     Magick.magick_draw_info_destroy d;
+    Magick._magick_exception_info_destroy e;
     ()
 end
 

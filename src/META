@@ -1,6 +1,6 @@
 name = "magick"
 description = "interface to the magick-core"
-version = "0.01.2"
-license = "extent license"
+version = "0.01.3"
+license = "extent license w/ spdx=any"
 archive(byte) = "magick.cma"
 archive(native) = "magick.cmxa"

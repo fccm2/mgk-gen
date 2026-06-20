@@ -9,8 +9,12 @@ let () =
   begin
     let img = Magick.magick_image_read nf e in
  
-    Magick.magick_image_set_filename img "rose2.png";
-    Magick.magick_image_write nf img;
+    Magick.magick_image_set_filename img "rose-2.png";
+
+    Magick.magick_image_display nf img e;
+
+    Magick.magick_image_write nf img e;
+
     Magick.magick_image_destroy img;
   end;
 

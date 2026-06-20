@@ -11,14 +11,27 @@ let () =
   begin
     let img = Magick.magick_image_read nf e in
 
+    (*
     let font = "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf" in
+    *)
+    let font = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" in
+
     Magick.magick_draw_info_set_font d font;
     Magick.magick_draw_info_set_pointsize d 26.0;
 
-    Magick.magick_draw_info_set_fill d (0, 0, 65535, 0);
+    Magick.magick_draw_info_set_fill d (0, 0, 65535, 65535);
+
     Magick.magick_draw_info_set_primitive d "text 20,40 'hello'";
 
-    Magick.magick_image_draw img d;
+    begin
+      try
+        Magick.magick_image_draw img d e;
+      with Failure fail_msg ->
+        Printf.printf "# draw: '%s' (fail-msg)\n%!" fail_msg;
+        Printf.printf "# draw: '%s' (reason)\n%!" (Magick.magick_exception_info_reason e);
+        Printf.printf "# draw: '%s' (description)\n%!" (Magick.magick_exception_info_description e);
+        Printf.printf "# draw: '%s' (severity)\n%!" (Magick.exception_severity_string (Magick.magick_exception_info_severity e));
+    end;
  
     Magick.magick_image_display nf img e;
     Magick.magick_image_destroy img;

@@ -1,0 +1,5 @@
+## opacity-to-alpha
+
+- opacity has been replaced by alpha in drawing commands,  
+    replace 0, by 255 or 65535
+

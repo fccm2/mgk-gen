@@ -15,7 +15,7 @@ let () =
     Magick.magick_draw_info_set_stroke_width d 6.0;
     Magick.magick_draw_info_set_primitive d "line 20,20 80,80";
 
-    Magick.magick_image_draw img d;
+    Magick.magick_image_draw img d e;
  
     Magick.magick_image_display nf img e;
     Magick.magick_image_destroy img;

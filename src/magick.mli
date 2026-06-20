@@ -1,6 +1,6 @@
 (** An Interface to the Magick-Core *)
 (* Interface-file for the magick-core lib.
- * Authors: Monnier Florent (2024, 2026)
+ * Authors: Monnier Florent (2024, 2026, )
  * To the extent permitted by law, you can use, study, modify, and re-
  * distribute this file, w/ any spdx standardized license,
  *)
@@ -57,7 +57,7 @@ val magick_image_set_filename : image -> string -> unit
 (** {4 read / write} *)
 
 val magick_image_read : image_info -> exception_info -> image
-val magick_image_write : image_info -> image -> unit
+val magick_image_write : image_info -> image -> exception_info -> unit
 
 (** {4 create} *)
 
@@ -201,7 +201,7 @@ val magick_draw_info_set_pointsize: draw_info -> float -> unit
 
 val magick_draw_info_set_compose: draw_info -> CompositeOp.t -> unit
 
-val magick_image_draw: image -> draw_info -> unit
+val magick_image_draw: image -> draw_info -> exception_info -> unit
 
 (** {4 quantum} *)
 
@@ -355,10 +355,15 @@ type exception_type =
   | ConfigureFatalError
   | PolicyFatalError
 
+  | UnknownException
+
 val magick_exception_info_reason : exception_info -> string
 val magick_exception_info_description : exception_info -> string
 val magick_exception_info_severity : exception_info -> exception_type
 val exception_severity_string : exception_type -> string
+
+val magick_exception_info_severity_string : exception_info -> string
+
 
 (** {4 links} *)
 
