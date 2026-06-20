@@ -1,8 +1,8 @@
 (** An Interface to the Magick-Core *)
 (* Interface-file for the magick-core lib.
- * Authors: Monnier Florent (2024)
- * To the extent permitted by law, you can use, modify, and redistribute
- * this file.
+ * Authors: Monnier Florent (2024, 2026)
+ * To the extent permitted by law, you can use, study, modify, and re-
+ * distribute this file, w/ any spdx standardized license,
  *)
 
 (** {4 genesis / terminus} *)

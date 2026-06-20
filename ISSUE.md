@@ -1,8 +1,13 @@
+## un-tested,
+
 The `"META"` file is `un-tested`.  
 The `"find_install"` target from "src/Makefile" is also `un-tested`.
-
-Calling `"magick_draw_info_set_compose"`, before `"magick_image_draw"`  
-doesn't seem to create any visible effect.  `[resolved]:` got the answer at  
-IM/discuss that this is the expected result, the `.compose` field being there  
-only for the image primitive.  (*thanks to* **Alan Gibson**)
  
+# list of test's that do'not pass:
+
+- test-02: abort
+- test-07: abort
+- test-08: abort
+- test-09: abort
+- test-12: abort
+

@@ -86,4 +86,6 @@ clean:
 	$(RM) magick.cmx
 	$(RM) magick.cma
 	$(RM) magick.cmxa
+	$(RM) magick.a
+	$(RM) magick.o
 
