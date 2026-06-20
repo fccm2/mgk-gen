@@ -985,7 +985,7 @@ caml_magick_image_spread(
 
   if (exception->severity != UndefinedException)
   {
-    caml_failwith("spread: error-image-spread");
+    caml_failwith("spread: exception-image-spread");
   }
 
   caml_image_2 = Val_img(image_2);
@@ -1232,7 +1232,7 @@ caml_magick_image_edge(
   Image *image_2;
 
   if (image == (Image *)NULL) {
-    caml_failwith("Image is NULL");
+    caml_failwith("edge: image-is-null");
   }
 
   image_2 = EdgeImage(image, Double_val(radius), exception);
@@ -1653,7 +1653,7 @@ caml_magick_image_draw(
   }
 
   if (image == (Image *)NULL) {
-    caml_failwith("magick_image_draw: Image is NULL");
+    caml_failwith("magick_image_draw: image-is-null");
   }
 
   ExceptionInfo *exception_info = Exninfo_val(caml_exninfo);
